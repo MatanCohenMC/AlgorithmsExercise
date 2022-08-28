@@ -5,39 +5,112 @@ using namespace std;
 #include <queue>
 #include "Graph.h"
 
-void init(int* n, int* m, int* s, int* t);
-void initListOfEdges(int m);
+void initParams(int* n, int* m, int* s, int* t);
+void initListOfEdges(int n, int m, list<Edge> listOfEdges);
 void invalidInput();
+int getWholePositiveNum();
+int getWholePositiveOrZeroNum();
+bool ifNumIsWhole(float num);
+int getNumInRange(int numOfVertices);
+
 
 int main()
 {
 	int n, m, s, t;
-	init(&n, &m, &s, &t);
+	initParams(&n, &m, &s, &t);
 	list<Edge> listOfEdges;
-	initListOfEdges(m);
+	initListOfEdges(n,m, listOfEdges);
 	
 }
 
-void init(int* n, int* m, int* s, int* t)
+// get the number of vertices, number of edges, the number representing s and the number representing s
+void initParams(int* n, int* m, int* s, int* t)
 {
-	cout << "Please enter the number of vertices" << endl;
-	cin >> *n;
-	cout << "Please enter the number of edges" << endl;
-	cin >> *m;
-	cout << "Please enter the number that represent S" << endl;
-	cin >> *s;
-	cout << "Please enter the number that represent T" << endl;
-	cin >> *t;
+	cout << "Please enter the number of vertices.\n";
+	*n = getWholePositiveOrZeroNum();
+	cout << "Please enter the number of edges.\n";
+	*m = getWholePositiveOrZeroNum();
+	cout << "Please enter the number that represent S.\n";
+	*s = getNumInRange(*n);
+	cout << "Please enter the number that represent T.\n";
+	*t = getNumInRange(*n);
 }
 
-void initListOfEdges(int m)
-{
-	// not negative capacity
-	// vertices from 1 to n
-}
-
+// report "invalid input" and exit program
 void invalidInput()
 {
-	cout << "Invalid input" << endl;
+	cout << "Invalid input.\n";
 	exit(1);
+}
+
+// Get a whole number that is zero or greater
+int getWholePositiveOrZeroNum()
+{
+	float num;
+
+	cin >> num;
+	if (num < 0 || !ifNumIsWhole(num))
+	{
+		invalidInput();
+	}
+
+	return num;
+}
+
+// Get a whole and Positive number
+int getWholePositiveNum()
+{
+	float num;
+
+	cin >> num;
+	if (num < 1 || !ifNumIsWhole(num))
+	{
+		invalidInput();
+	}
+
+	return num;
+}
+
+// Get a whole number
+bool ifNumIsWhole(float num)
+{
+	return floor(num) == num;
+}
+
+// Get a whole number between 1 to n
+int getNumInRange(int numOfVertices)
+{
+	float num;
+
+	cin >> num;
+	if (num > numOfVertices || num < 1 || !ifNumIsWhole(num))
+	{
+		invalidInput();
+	}
+
+	return num;
+}
+
+void initListOfEdges(int n,int m, list<Edge> listOfEdges)
+{
+	int src, dest, weight;
+
+	for (int i=0 ; i < m ; i++)
+	{
+		cout << "Please enter the edge params (src, dest, weight)\n";
+		src = getNumInRange(n);
+		dest = getNumInRange(n);
+		weight = getWholePositiveNum();
+		Edge newEdge(src, dest, weight, 0);
+
+		listOfEdges.push_back(newEdge);
+	}
+
+	// print to check list
+	cout << "List of edges = { ";
+	for (Edge e : listOfEdges) {
+		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getWeight() << ", " << e.getFlow() << ")\n";
+	}
+	cout << "};\n";
+
 }
