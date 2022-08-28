@@ -93,24 +93,24 @@ int getNumInRange(int numOfVertices)
 
 void initListOfEdges(int n,int m, list<Edge> listOfEdges)
 {
-	int src, dest, weight;
+	int src, dest, cap;
 
 	for (int i=0 ; i < m ; i++)
 	{
-		cout << "Please enter the edge params (src, dest, weight)\n";
+		cout << "Please enter the edge parameters (src, dest, weight):\n";
 		src = getNumInRange(n);
 		dest = getNumInRange(n);
-		weight = getWholePositiveNum();
-		Edge newEdge(src, dest, weight, 0);
+		cap = getWholePositiveNum();
+		Edge newEdge(src, dest, cap, 0);
 
 		listOfEdges.push_back(newEdge);
 	}
 
-	// print to check list
+	// print to check list ///////
 	cout << "List of edges = { ";
 	for (Edge e : listOfEdges) {
-		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getWeight() << ", " << e.getFlow() << ")\n";
+		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getCap() << ", " << e.getFlow() << ") , ";
 	}
 	cout << "};\n";
-
+	//////////////////////////////
 }
