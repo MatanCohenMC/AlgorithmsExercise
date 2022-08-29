@@ -1,5 +1,6 @@
 #pragma once
-
+using namespace std;
+#include <iostream>
 typedef int vertex;
 
 class Edge
@@ -12,11 +13,11 @@ private:
 
 public:
 	Edge(int src, int dest, int cap, int flow);
-	Edge createEdge(int src, int dest, int cap, int flow);
-	vertex getSrc() {return m_Src;}
-	vertex getDest() { return m_Dest; }
-	int getCap() { return m_Cap; }
-	int getFlow() { return m_Flow; }
-	void setFlow(int flow) { m_Flow = flow; }
-
+	Edge CreateEdge(int src, int dest, int cap, int flow);
+	vertex GetSrc() {return m_Src;}
+	vertex GetDest() { return m_Dest; }
+	int GetCap() { return m_Cap; }
+	int GetFlow() { return m_Flow; }
+	void SetFlow(int flow) { m_Flow = flow; }
+	void PrintEdge();
 };

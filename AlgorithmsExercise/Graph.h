@@ -6,21 +6,20 @@ using namespace std;
 #include <list>
 #include "Edge.h"
 
-
-
-
-typedef pair<int, Edge> neighbor;
+typedef pair<vertex, Edge> neighbor;
 
 class Graph
 {
 private:
-	int amountOfVertices = 0;
-	vector<list<vertex>> adjLists;
+	int m_AmountOfVertices = 0;
+	vector<list<neighbor>> m_AdjLists;
 
 public:
 	void MakeEmptyGraph(int n);
-	list<vertex> GetAdjList(int u);
-	void AddEdge(int u, int v, int c);
-	void RemoveEdge(int u, int v);
+	list<neighbor> GetAdjList(vertex u);
+	void AddEdge(vertex u, vertex v, int c);
+	void RemoveEdge(vertex u, vertex v);
+	void PrintGraph();
+	void PrintAdjList(vertex u);
 };
 

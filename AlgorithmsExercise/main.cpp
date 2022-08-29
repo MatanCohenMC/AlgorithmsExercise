@@ -1,10 +1,9 @@
 using namespace std;
 #include <iostream>
-#include <stdlib.h>
 #include "Graph.h"
 
 void initParams(int* n, int* m, int* s, int* t);
-void initListOfEdges(int n, int m, list<Edge>* listOfEdges);
+void initListOfEdges(int n, int m, list<Edge>* listOfEdges, Graph* graph);
 void invalidInput();
 int getWholePositiveNum();
 int getWholePositiveOrZeroNum();
@@ -16,14 +15,19 @@ int main()
 {
 	int n, m;
 	vertex s, t;
+	Graph graph;
+
 	initParams(&n, &m, &s, &t);
+	graph.MakeEmptyGraph(n);
 	list<Edge> listOfEdges;
-	initListOfEdges(n,m, &listOfEdges);
+	initListOfEdges(n,m, &listOfEdges, &graph);
+	graph.PrintGraph(); // JUST FOR CHECKING
+
 
 	// print to check list ///////
 	cout << "List of edges = { ";
 	for (Edge e : listOfEdges) {
-		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getCap() << ", " << e.getFlow() << ") , ";
+		cout << "(" << e.GetSrc() << ", " << e.GetDest() << ", " << e.GetCap() << ", " << e.GetFlow() << ") , ";
 	}
 	cout << "};\n";
 	//////////////////////////////
@@ -103,7 +107,7 @@ int getNumInRange(int numOfVertices)
 }
 
 // Get the Edges
-void initListOfEdges(int n,int m, list<Edge>* listOfEdges)
+void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 {
 	int cap;
 	vertex src, dest;
@@ -116,6 +120,9 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges)
 		cap = getWholePositiveNum();
 		Edge newEdge(src, dest, cap, 0);
 
-		(*listOfEdges).push_back(newEdge);
+		
+		graph->AddEdge(src, dest, cap); // add to graph
+
+		(*listOfEdges).push_back(newEdge); // add to edges list
 	}
 }
