@@ -10,7 +10,7 @@ void Graph::MakeEmptyGraph(int n)
 	}
 }
 
-list<Vertex> Graph::GetAdjList(int u)
+list<vertex> Graph::GetAdjList(int u)
 {
 	return adjLists[u];
 }

@@ -7,9 +7,7 @@ using namespace std;
 #include "Edge.h"
 
 
-struct Vertex {
-	int vertex;
-};
+
 
 typedef pair<int, Edge> neighbor;
 
@@ -17,11 +15,11 @@ class Graph
 {
 private:
 	int amountOfVertices = 0;
-	vector<list<Vertex>> adjLists;
+	vector<list<vertex>> adjLists;
 
 public:
 	void MakeEmptyGraph(int n);
-	list<Vertex> GetAdjList(int u);
+	list<vertex> GetAdjList(int u);
 	void AddEdge(int u, int v, int c);
 	void RemoveEdge(int u, int v);
 };

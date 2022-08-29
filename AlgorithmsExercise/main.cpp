@@ -1,12 +1,10 @@
 using namespace std;
 #include <iostream>
 #include <stdlib.h>
-#include <vector>
-#include <queue>
 #include "Graph.h"
 
 void initParams(int* n, int* m, int* s, int* t);
-void initListOfEdges(int n, int m, list<Edge> listOfEdges);
+void initListOfEdges(int n, int m, list<Edge>* listOfEdges);
 void invalidInput();
 int getWholePositiveNum();
 int getWholePositiveOrZeroNum();
@@ -16,15 +14,28 @@ int getNumInRange(int numOfVertices);
 
 int main()
 {
-	int n, m, s, t;
+	int n, m;
+	vertex s, t;
 	initParams(&n, &m, &s, &t);
 	list<Edge> listOfEdges;
-	initListOfEdges(n,m, listOfEdges);
+	initListOfEdges(n,m, &listOfEdges);
+
+	// print to check list ///////
+	cout << "List of edges = { ";
+	for (Edge e : listOfEdges) {
+		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getCap() << ", " << e.getFlow() << ") , ";
+	}
+	cout << "};\n";
+	//////////////////////////////
+
+	// create flow network
+
+
 	
 }
 
 // get the number of vertices, number of edges, the number representing s and the number representing s
-void initParams(int* n, int* m, int* s, int* t)
+void initParams(int* n, int* m, vertex* s, vertex* t)
 {
 	cout << "Please enter the number of vertices.\n";
 	*n = getWholePositiveOrZeroNum();
@@ -91,9 +102,11 @@ int getNumInRange(int numOfVertices)
 	return num;
 }
 
-void initListOfEdges(int n,int m, list<Edge> listOfEdges)
+// Get the Edges
+void initListOfEdges(int n,int m, list<Edge>* listOfEdges)
 {
-	int src, dest, cap;
+	int cap;
+	vertex src, dest;
 
 	for (int i=0 ; i < m ; i++)
 	{
@@ -103,14 +116,6 @@ void initListOfEdges(int n,int m, list<Edge> listOfEdges)
 		cap = getWholePositiveNum();
 		Edge newEdge(src, dest, cap, 0);
 
-		listOfEdges.push_back(newEdge);
+		(*listOfEdges).push_back(newEdge);
 	}
-
-	// print to check list ///////
-	cout << "List of edges = { ";
-	for (Edge e : listOfEdges) {
-		cout << "(" << e.getSrc() << ", " << e.getDest() << ", " << e.getCap() << ", " << e.getFlow() << ") , ";
-	}
-	cout << "};\n";
-	//////////////////////////////
 }
