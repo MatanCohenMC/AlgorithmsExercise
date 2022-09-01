@@ -92,3 +92,9 @@ void PriorityQueue::Swap(int index1, int index2)
 	m_MaxHeap[index1] = m_MaxHeap[index2];
 	m_MaxHeap[index2] = tmp;
 }
+
+// Return TRUE if the queue is empty
+bool PriorityQueue::IsEmpty()
+{
+	return m_MaxHeap.empty();
+}

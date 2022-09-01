@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="FlowNetwork.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PriorityQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Edge.h" />
+    <ClInclude Include="FlowNetwork.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="PriorityQueue.h" />
   </ItemGroup>

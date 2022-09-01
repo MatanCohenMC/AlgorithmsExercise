@@ -2,6 +2,7 @@ using namespace std;
 #include <iostream>
 #include "Graph.h"
 #include "PriorityQueue.h"
+#include  "FlowNetwork.h"
 
 void initParams(int* n, int* m, int* s, int* t);
 void initListOfEdges(int n, int m, list<Edge>* listOfEdges, Graph* graph);
@@ -16,22 +17,27 @@ int main()
 {
 	int n, m;
 	vertex s, t;
-	Graph graph;
+	Graph G;
 
 	initParams(&n, &m, &s, &t);
-	graph.MakeEmptyGraph(n);
-	list<Edge> listOfEdges;
-	initListOfEdges(n,m, &listOfEdges, &graph);
-	graph.PrintGraph(); // JUST FOR CHECKING
+	G.MakeEmptyGraph(n);
+	list<Edge> listOfEdges; // not really needed
+	initListOfEdges(n,m, &listOfEdges, &G);
+
+	G.PrintGraph(); // JUST FOR CHECKING
+
+	FlowNetwork flowNetWork(G, s, t); // Creating the flow network
 
 
-	
-	PriorityQueue Q;
+
+
+
+	// Test queue
+	/*PriorityQueue Q;
 	vector<int> d = { -1, 7, 2 ,5, 1, 3 };
 	Q.BuildPriorityQueue(5, d);
-
 	Q.PrintQueue();
-	
+	*/
 
 
 	// print to check list ///////
@@ -41,8 +47,6 @@ int main()
 	}
 	cout << "};\n";*/
 	//////////////////////////////
-
-	// create flow network
 
 
 	

@@ -21,5 +21,6 @@ public:
 	void RemoveEdge(vertex u, vertex v);
 	void PrintGraph();
 	void PrintAdjList(vertex u);
+	int GetAmountOfVertices() { return m_AmountOfVertices; }
 };
 

@@ -27,4 +27,5 @@ public:
 	void Insert(Pair item);
 	void PrintQueue();
 	void Swap(int index1, int index2);
+	bool IsEmpty();
 };
