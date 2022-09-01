@@ -1,15 +1,15 @@
 #include "PriorityQueue.h"
 
 // Create a new priority queue
-void PriorityQueue::BuildPriorityQueue(vector<vertex> verArr, vector<int> d)
+void PriorityQueue::BuildPriorityQueue(int amountOfVertices, vector<int> d)
 {
-	m_MaxHeap.resize(verArr.size());
-	m_MaxHeap.clear(); // not nessecery
+	m_MaxHeap.resize(amountOfVertices);
+	//m_MaxHeap.clear(); // not nessecery
 
-	for (int i = 1; i < verArr.size(); ++i)
+	for (int i = 0; i < m_MaxHeap.size(); ++i)
 	{
-		m_MaxHeap[i].priority = d[i];
-		m_MaxHeap[i].ver = verArr[i];
+		m_MaxHeap[i].priority = d[i+1];
+		m_MaxHeap[i].ver = i+1;
 	}
 
 	for (int i = m_MaxHeap.size()/2 - 1; i >= 0; i--)
@@ -19,23 +19,29 @@ void PriorityQueue::BuildPriorityQueue(vector<vertex> verArr, vector<int> d)
 }
 
 // Place the item in his right place in the priority queue
-void PriorityQueue::DownFixHeap(int index)
+void PriorityQueue::DownFixHeap(int node)
 {
-	int left = Left(index);
-	int right = Right(index);
-	int max = index;
+	int left = Left(node);
+	int right = Right(node);
+	int max;
 
-	if (left < m_MaxHeap.size() && m_MaxHeap[left].priority >= m_MaxHeap[index].priority)
+	if (left < m_MaxHeap.size() && m_MaxHeap[left].priority > m_MaxHeap[node].priority)
 	{
 		max = left;
 	}
-	if (right < m_MaxHeap.size() && m_MaxHeap[right].priority >= m_MaxHeap[max].priority)
+	else
+	{
+		max = node;
+	}
+
+	if (right < m_MaxHeap.size() && m_MaxHeap[right].priority > m_MaxHeap[max].priority)
 	{
 		max = right;
 	}
-	if (max != index)
+
+	if (max != node)
 	{
-		swap(index, max);
+		Swap(node, max);
 		DownFixHeap(max);
 	}
 }
@@ -68,4 +74,21 @@ void PriorityQueue::Insert(Pair item)
 	}
 
 	m_MaxHeap[i] = item;
+}
+
+// Print the queue
+void PriorityQueue::PrintQueue()
+{
+	for(int i = 0 ; i < m_MaxHeap.size() ; ++i)
+	{
+		cout << "[" << i << "]" << "(" << m_MaxHeap[i].ver << "," << m_MaxHeap[i].priority << ")\n";
+	}
+}
+
+// Swap between two cells of the queue by index
+void PriorityQueue::Swap(int index1, int index2)
+{
+	Pair tmp = m_MaxHeap[index1];
+	m_MaxHeap[index1] = m_MaxHeap[index2];
+	m_MaxHeap[index2] = tmp;
 }

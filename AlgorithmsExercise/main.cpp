@@ -1,6 +1,7 @@
 using namespace std;
 #include <iostream>
 #include "Graph.h"
+#include "PriorityQueue.h"
 
 void initParams(int* n, int* m, int* s, int* t);
 void initListOfEdges(int n, int m, list<Edge>* listOfEdges, Graph* graph);
@@ -24,12 +25,21 @@ int main()
 	graph.PrintGraph(); // JUST FOR CHECKING
 
 
+	
+	PriorityQueue Q;
+	vector<int> d = { -1, 7, 2 ,5, 1, 3 };
+	Q.BuildPriorityQueue(5, d);
+
+	Q.PrintQueue();
+	
+
+
 	// print to check list ///////
-	cout << "List of edges = { ";
+	/*cout << "List of edges = { ";
 	for (Edge e : listOfEdges) {
 		cout << "(" << e.GetSrc() << ", " << e.GetDest() << ", " << e.GetCap() << ", " << e.GetFlow() << ") , ";
 	}
-	cout << "};\n";
+	cout << "};\n";*/
 	//////////////////////////////
 
 	// create flow network

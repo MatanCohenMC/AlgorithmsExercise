@@ -21,10 +21,10 @@ private:
 
 public:
 	PriorityQueue() { m_MaxHeap.clear(); }
-	void BuildPriorityQueue(vector<vertex> verArr, vector<int> d);
-	void DownFixHeap(int index);
+	void BuildPriorityQueue(int amountOfVertices, vector<int> d);
+	void DownFixHeap(int node);
 	Pair DeleteMax();
 	void Insert(Pair item);
-
+	void PrintQueue();
+	void Swap(int index1, int index2);
 };
-
