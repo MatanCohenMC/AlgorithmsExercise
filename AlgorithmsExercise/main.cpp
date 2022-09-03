@@ -15,7 +15,7 @@ int getNumInRange(int numOfVertices);
 
 int main()
 {
-	int n, m;
+	int n, m, maxFlow;
 	vertex s, t;
 	Graph G;
 
@@ -28,7 +28,8 @@ int main()
 
 	FlowNetwork flowNetWork(&G, s, t); // Creating the flow network
 
-	flowNetWork.FFbyBFS();
+	maxFlow = flowNetWork.FFbyBFS();
+	cout << "Max flow by FF by BFS:" << maxFlow << "\n";
 
 
 

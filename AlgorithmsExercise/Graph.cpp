@@ -103,6 +103,8 @@ void Graph::AddNegativeEdges()
 					}
 				}
 			}
+
+			negEdgeExist = false;
 		}
 	}
 }
