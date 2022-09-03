@@ -14,8 +14,9 @@ FlowNetwork::FlowNetwork(Graph* G, vertex s, vertex t)
 
 int FlowNetwork::FFbyBFS()
 {
+	int maxFlow = 0;
 	list<neighbor> AdjList;
-	list<Edge> P;
+	list<Edge*> RP, P;
 
 	for (int i = 1 ; i <= m_Graph.GetAmountOfVertices() ; i++)
 	{
@@ -23,11 +24,7 @@ int FlowNetwork::FFbyBFS()
 		for (auto e : AdjList)
 		{
 			e.second.SetFlow(0);
-
-			if (!hasNegEdge(e.second.GetSrc(), e.second.GetDest())) // if (u,v) doesn't have negative edge
-			{
-				m_Graph.AddEdge(e.second.GetDest(), e.second.GetSrc(), 0); // add (v,u)
-			}
+			e.second.GetNegEdge()->SetFlow(0);
 		}
 	}
 
@@ -36,31 +33,58 @@ int FlowNetwork::FFbyBFS()
 
 	while(d[m_T] != INFINITY)
 	{
-		findPathInResidualGraph(&P, m_S, m_T);
-		int CfP = findResidualCap(P);
-		updatePathInGraph(P, CfP);
-
-
-
-
-
-
+		findPathInGraph(residualGraph, &RP, m_S, m_T);
+		findPathInGraph(m_Graph, &P, m_S, m_T);
+		int CfP = findResidualCap(RP);
+		updatePathInGraph(&P, CfP);
+		updatePathInResidualGraph(&P,&RP);
+		maxFlow += CfP;
 
 		BFS(residualGraph, m_S);
 	}
 
-
+	return maxFlow;
 }
 
-int FlowNetwork::findResidualCap(list<Edge> P)
+void FlowNetwork::updatePathInResidualGraph(list<Edge*>* P, list<Edge*>* RP)
+{
+	list<Edge*>::iterator itrP;
+	list<Edge*>::iterator itrRP;
+	itrP = P->begin();
+	itrRP = RP->begin();
+
+	while (P->end() != itrP)
+	{
+		(*itrRP)->SetCap((*itrP)->GetCap() - (*itrP)->GetFlow()); // Cf(u,v) = C(u,v) - f(u,v)
+
+		((*itrRP)->GetNegEdge())->SetCap((*itrP)->GetNegEdge()->GetCap() - (*itrP)->GetNegEdge()->GetFlow()); // Cf(v,u) = C(v,u) - f(v,u)
+
+		++itrP;
+		++itrRP;
+	}
+}
+
+void FlowNetwork::updatePathInGraph(list<Edge*>* P, int CfP)
+{
+	int newFlow;
+
+	for (auto e : *P)
+	{
+		newFlow = e->GetFlow() + CfP;
+		e->SetFlow(newFlow);
+		e->GetNegEdge()->SetFlow(-newFlow);
+	}
+}
+
+int FlowNetwork::findResidualCap(list<Edge*> P)
 {
 	int edgeCap, minCap;
 
-	minCap = P.front().GetCap();
+	minCap = P.front()->GetCap();
 
 	for (auto edge : P)
 	{
-		edgeCap = edge.GetCap();
+		edgeCap = edge->GetCap();
 		if (edgeCap < minCap)
 		{
 			minCap = edgeCap;
@@ -70,20 +94,20 @@ int FlowNetwork::findResidualCap(list<Edge> P)
 	return minCap;
 }
 
-void FlowNetwork::findPathInResidualGraph(list<Edge>* P, vertex s, vertex t)
+void FlowNetwork::findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t)
 {
 	vertex i, u = t;
 	list<neighbor> AdjList;
 
 	while (p[u] != NULL)
 	{
-		AdjList = m_Graph.GetAdjList(p[u]);
+		AdjList = G.GetAdjList(p[u]);
 
 		for (auto i: AdjList)
 		{
 			if (i.second.GetDest() == u)
 			{
-				(*P).push_front(i.second);
+				P->push_front(&(i.second));
 			}
 		}
 

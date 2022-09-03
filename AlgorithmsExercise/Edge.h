@@ -21,6 +21,7 @@ public:
 	int GetFlow() { return m_Flow; }
 	void SetFlow(int flow) { m_Flow = flow; }
 	void SetNegEdge(Edge* e) { m_NegEdge = e; }
-	Edge GetNegEdge() { return *m_NegEdge; }
+	Edge* GetNegEdge() { return m_NegEdge; }
+	void SetCap(int cap) { m_Cap = cap; }
 	void PrintEdge();
 };

@@ -19,7 +19,9 @@ public:
 	void Init(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
 	int FFbyBFS();
 	// FFbyDyxtra
-	void findPathInResidualGraph(list<Edge> *P, vertex s, vertex t);
-	int findResidualCap(list<Edge> P);
+	void findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t);
+	int findResidualCap(list<Edge*> P);
+	void updatePathInGraph(list<Edge*>* P, int CfP);
+	void updatePathInResidualGraph(list<Edge*>* P, list<Edge*>* RP);
 };
 
