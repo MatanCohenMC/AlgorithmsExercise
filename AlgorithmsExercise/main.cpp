@@ -28,7 +28,7 @@ int main()
 
 	FlowNetwork flowNetWork(G, s, t); // Creating the flow network
 
-
+	flowNetWork.FFbyBFS();
 
 
 

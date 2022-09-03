@@ -9,15 +9,17 @@ class FlowNetwork
 private:
 	Graph m_Graph;
 	vertex m_S , m_T;
+	vector<int> d;
+	vector<vertex> p;
 
 public:
-	FlowNetwork(Graph G, vertex s, vertex t) { m_Graph = G, m_S = s, m_T = t; }
-
+	FlowNetwork(Graph* G, vertex s, vertex t);
 	void BFS(Graph G, vertex s);
 	void Dijkstra(Graph G, int weight, vertex s);
 	void Init(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
-	// FFbyBFS
+	int FFbyBFS();
 	// FFbyDyxtra
-
+	void findPathInResidualGraph(list<Edge> *P, vertex s, vertex t);
+	int findResidualCap(list<Edge> P);
 };
 
