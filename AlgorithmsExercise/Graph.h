@@ -22,5 +22,6 @@ public:
 	void PrintGraph();
 	void PrintAdjList(vertex u);
 	int GetAmountOfVertices() { return m_AmountOfVertices; }
+	void AddNegativeEdges();
 };
 

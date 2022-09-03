@@ -23,10 +23,10 @@ int main()
 	G.MakeEmptyGraph(n);
 	list<Edge> listOfEdges; // not really needed
 	initListOfEdges(n,m, &listOfEdges, &G);
-
+	G.AddNegativeEdges();
 	G.PrintGraph(); // JUST FOR CHECKING
 
-	FlowNetwork flowNetWork(G, s, t); // Creating the flow network
+	FlowNetwork flowNetWork(&G, s, t); // Creating the flow network
 
 	flowNetWork.FFbyBFS();
 
@@ -140,3 +140,4 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 		(*listOfEdges).push_back(newEdge); // add to edges list
 	}
 }
+

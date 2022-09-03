@@ -20,10 +20,14 @@ int FlowNetwork::FFbyBFS()
 	for (int i = 1 ; i <= m_Graph.GetAmountOfVertices() ; i++)
 	{
 		AdjList = m_Graph.GetAdjList(i);
-		for (auto v : AdjList)
+		for (auto e : AdjList)
 		{
-			v.second.SetFlow(0);
+			e.second.SetFlow(0);
 
+			if (!hasNegEdge(e.second.GetSrc(), e.second.GetDest())) // if (u,v) doesn't have negative edge
+			{
+				m_Graph.AddEdge(e.second.GetDest(), e.second.GetSrc(), 0); // add (v,u)
+			}
 		}
 	}
 

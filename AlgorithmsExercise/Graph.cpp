@@ -67,3 +67,42 @@ void Graph::PrintAdjList(vertex u)
 	cout << "\b\b" << "|";
 	cout << "\n";
 }
+
+
+void Graph::AddNegativeEdges()
+{
+	bool negEdgeExist = false;
+	list<neighbor> AdjList;
+
+	for (int i = 1; i <= m_AmountOfVertices; i++)
+	{
+		for (auto v : m_AdjLists[i])
+		{
+			for (auto u : m_AdjLists[v.first])
+			{
+				if (u.first == v.second.GetSrc())
+				{
+					v.second.SetNegEdge(&(u.second));
+					u.second.SetNegEdge(&(v.second));
+					negEdgeExist = true;
+				}
+			}
+
+			if (negEdgeExist == false)
+			{
+				Edge newEdge(v.second.GetDest(), v.second.GetSrc(), 0, 0);
+				neighbor newNeighbor(v.second.GetSrc(), newEdge);
+				m_AdjLists[v.first].push_back(newNeighbor);
+
+				for (auto u : m_AdjLists[v.first])
+				{
+					if (u.first == v.second.GetSrc())
+					{
+						v.second.SetNegEdge(&(u.second));
+						u.second.SetNegEdge(&(v.second));
+					}
+				}
+			}
+		}
+	}
+}

@@ -10,6 +10,7 @@ private:
 	vertex m_Dest;
 	int m_Cap;
 	int m_Flow = 0;
+	Edge* m_NegEdge = NULL;
 
 public:
 	Edge(int src, int dest, int cap, int flow);
@@ -19,5 +20,7 @@ public:
 	int GetCap() { return m_Cap; }
 	int GetFlow() { return m_Flow; }
 	void SetFlow(int flow) { m_Flow = flow; }
+	void SetNegEdge(Edge* e) { m_NegEdge = e; }
+	Edge GetNegEdge() { return *m_NegEdge; }
 	void PrintEdge();
 };
