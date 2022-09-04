@@ -27,14 +27,18 @@ int main()
 	G.PrintGraph(); // JUST FOR CHECKING
 
 
-	for (auto e : listOfEdges)
+	cout << "\n";
+	int i;
+	for (i = 1; i <= n; i++)
 	{
-		e.PrintEdge();
-		cout << " - ";
-		e.GetNegEdge()->PrintEdge();
-		cout << "\n";
+		for (auto v : G.GetAdjList(i))
+		{
+			v.second.PrintEdge();
+			cout << " - ";
+			v.second.GetNegEdge()->PrintEdge();
+			cout << "\n";
+		}
 	}
-
 
 
 	FlowNetwork flowNetWork(&G, s, t);
