@@ -71,40 +71,108 @@ void Graph::PrintAdjList(vertex u)
 
 void Graph::AddNegativeEdges()
 {
+
 	bool negEdgeExist = false;
 	list<neighbor> AdjList;
-
+	list<neighbor>::iterator itrV;
+	list<neighbor>::iterator itrU;
+	
 	for (int i = 1; i <= m_AmountOfVertices; i++)
 	{
-		for (auto v : m_AdjLists[i])
+		itrV = m_AdjLists[i].begin();
+		while (m_AdjLists[i].end() != itrV)
 		{
-			for (auto u : m_AdjLists[v.first])
+			itrU = m_AdjLists[itrV->first].begin();
+			while (m_AdjLists[itrV->first].end() != itrU)
 			{
-				if (u.first == v.second.GetSrc())
+				if (itrU->first == itrV->second.GetSrc())
 				{
-					v.second.SetNegEdge(&(u.second));
-					u.second.SetNegEdge(&(v.second));
+					itrV->second.SetNegEdge(&(itrU->second));
+					itrU->second.SetNegEdge(&(itrV->second));
 					negEdgeExist = true;
 				}
+
+				++itrU;
 			}
 
+			itrU = m_AdjLists[itrV->first].begin();
 			if (negEdgeExist == false)
 			{
-				Edge newEdge(v.second.GetDest(), v.second.GetSrc(), 0, 0);
-				neighbor newNeighbor(v.second.GetSrc(), newEdge);
-				m_AdjLists[v.first].push_back(newNeighbor);
+				Edge newEdge(itrV->second.GetDest(), itrV->second.GetSrc(), 0, 0);
+				neighbor newNeighbor(itrV->second.GetSrc(), newEdge);
+				m_AdjLists[itrV->first].push_back(newNeighbor);
 
-				for (auto u : m_AdjLists[v.first])
+				while (m_AdjLists[itrV->first].end() != itrU)
 				{
-					if (u.first == v.second.GetSrc())
+					if (itrU->first == itrV->second.GetSrc())
 					{
-						v.second.SetNegEdge(&(u.second));
-						u.second.SetNegEdge(&(v.second));
+						itrV->second.SetNegEdge(&(itrU->second));
+						itrU->second.SetNegEdge(&(itrV->second));
 					}
+
+					++itrU;
 				}
 			}
 
 			negEdgeExist = false;
+
+			++itrV;
 		}
 	}
+	
+
+
+
+
+	//bool negEdgeExist = false;
+	//list<neighbor> AdjList;
+
+	//for (int i = 1; i <= m_AmountOfVertices; i++)
+	//{
+	//	for (auto v : m_AdjLists[i])
+	//	{
+	//		for (auto u : m_AdjLists[v.first])
+	//		{
+	//			if (u.first == v.second.GetSrc())
+	//			{
+	//				v.second.SetNegEdge(&(u.second));
+	//				u.second.SetNegEdge(&(v.second));
+	//				negEdgeExist = true;
+	//			}
+	//		}
+
+	//		if (negEdgeExist == false)
+	//		{
+	//			Edge newEdge(v.second.GetDest(), v.second.GetSrc(), 0, 0);
+	//			neighbor newNeighbor(v.second.GetSrc(), newEdge);
+	//			m_AdjLists[v.first].push_back(newNeighbor);
+
+	//			for (auto u : m_AdjLists[v.first])
+	//			{
+	//				if (u.first == v.second.GetSrc())
+	//				{
+	//					v.second.SetNegEdge(&(u.second));
+	//					u.second.SetNegEdge(&(v.second));
+	//				}
+	//			}
+	//		}
+
+	//		negEdgeExist = false;
+	//	}
+	//}
+
+	this->PrintGraph();
+	cout << "\n";
+	int i;
+	for (i = 1; i <= this->GetAmountOfVertices() ; i++)
+	{
+		for (auto v : m_AdjLists[i])
+		{
+			v.second.PrintEdge();
+			cout << " - ";
+			v.second.GetNegEdge()->PrintEdge();
+			cout << "\n";
+		}
+	}
+	
 }

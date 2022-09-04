@@ -1,7 +1,7 @@
 #include "Edge.h"
 
 // Create new edge
-Edge::Edge(vertex src, vertex dest, int cap, int flow)
+Edge::Edge(vertex src, vertex dest, int cap, int flow, Edge* negEdge)
 {
 	m_Src = src;
 	m_Dest = dest;

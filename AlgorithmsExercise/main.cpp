@@ -23,10 +23,21 @@ int main()
 	G.MakeEmptyGraph(n);
 	list<Edge> listOfEdges; // not really needed
 	initListOfEdges(n,m, &listOfEdges, &G);
-	G.AddNegativeEdges();
+	// G.AddNegativeEdges();
 	G.PrintGraph(); // JUST FOR CHECKING
 
-	FlowNetwork flowNetWork(&G, s, t); // Creating the flow network
+
+	for (auto e : listOfEdges)
+	{
+		e.PrintEdge();
+		cout << " - ";
+		e.GetNegEdge()->PrintEdge();
+		cout << "\n";
+	}
+
+
+
+	FlowNetwork flowNetWork(&G, s, t);
 
 	maxFlow = flowNetWork.FFbyBFS();
 	cout << "Max flow by FF by BFS:" << maxFlow << "\n";
@@ -140,5 +151,6 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 
 		(*listOfEdges).push_back(newEdge); // add to edges list
 	}
-}
 
+	graph->AddNegativeEdges();
+}

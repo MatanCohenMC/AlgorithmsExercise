@@ -10,10 +10,10 @@ private:
 	vertex m_Dest;
 	int m_Cap;
 	int m_Flow = 0;
-	Edge* m_NegEdge = NULL;
+	Edge* m_NegEdge = (Edge*)malloc(sizeof(Edge));
 
 public:
-	Edge(int src, int dest, int cap, int flow);
+	Edge(int src, int dest, int cap, int flow, Edge* negEdge = NULL);
 	Edge CreateEdge(int src, int dest, int cap, int flow);
 	vertex GetSrc() {return m_Src;}
 	vertex GetDest() { return m_Dest; }

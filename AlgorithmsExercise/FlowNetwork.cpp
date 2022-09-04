@@ -1,5 +1,6 @@
 #include "FlowNetwork.h"
 
+// Creating a flow network
 FlowNetwork::FlowNetwork(Graph* G, vertex s, vertex t)
 {
 	m_Graph = *G;
@@ -31,6 +32,13 @@ int FlowNetwork::FFbyBFS()
 	Graph residualGraph = m_Graph;
 	BFS(residualGraph, m_S);
 
+	cout << "d[]: ";
+	for(auto u : d)
+	{
+		cout << u << " ";
+	}
+	cout << "\n";
+
 	while(d[m_T] != INFINITY)
 	{
 		findPathInGraph(residualGraph, &RP, m_S, m_T);
@@ -41,6 +49,13 @@ int FlowNetwork::FFbyBFS()
 		maxFlow += CfP;
 
 		BFS(residualGraph, m_S);
+
+		cout << "d[]: ";
+		for (auto u : d)
+		{
+			cout << u << " ";
+		}
+		cout << "\n";
 	}
 
 	return maxFlow;
