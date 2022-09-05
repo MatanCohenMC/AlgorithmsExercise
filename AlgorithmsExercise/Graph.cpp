@@ -17,6 +17,11 @@ list<neighbor> Graph::GetAdjList(vertex u)
 	return m_AdjLists[u];
 }
 
+list<neighbor>* Graph::SetAdjList(vertex u)
+{
+	return &m_AdjLists[u];
+}
+
 // Add new edge to the graph
 void Graph::AddEdge(vertex u, vertex v, int c)
 {
@@ -24,6 +29,21 @@ void Graph::AddEdge(vertex u, vertex v, int c)
 	neighbor newNeighbor(v, newEdge);
 	
 	m_AdjLists[u].push_back(newNeighbor);
+}
+
+Edge& Graph::GetEdgePtr(vertex u, vertex v)
+{
+	list<neighbor> AdjList = m_AdjLists[u];
+	Edge* edge = nullptr;
+
+	for (auto i : AdjList)
+	{
+		if (i.first == v)
+		{
+			edge = &(i.second);
+			return *edge;
+		}
+	}
 }
 
 // Remove the edge (u,v) from the graph
@@ -71,7 +91,6 @@ void Graph::PrintAdjList(vertex u)
 
 void Graph::AddNegativeEdges()
 {
-
 	bool negEdgeExist = false;
 	list<neighbor> AdjList;
 	list<neighbor>::iterator itrV;
@@ -161,18 +180,18 @@ void Graph::AddNegativeEdges()
 	//	}
 	//}
 
-	this->PrintGraph();
-	cout << "\n";
-	int i;
-	for (i = 1; i <= this->GetAmountOfVertices() ; i++)
-	{
-		for (auto v : m_AdjLists[i])
-		{
-			v.second.PrintEdge();
-			cout << " - ";
-			v.second.GetNegEdge()->PrintEdge();
-			cout << "\n";
-		}
-	}
+	//this->PrintGraph();                 // CHECKING	
+	//cout << "\n";
+	//int i;
+	//for (i = 1; i <= this->GetAmountOfVertices() ; i++)
+	//{
+	//	for (auto v : m_AdjLists[i])
+	//	{
+	//		v.second.PrintEdge();
+	//		cout << " - ";
+	//		v.second.GetNegEdge()->PrintEdge();
+	//		cout << "\n";
+	//	}
+	//}
 	
 }

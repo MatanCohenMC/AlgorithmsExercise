@@ -9,11 +9,11 @@ private:
 	vertex m_Src;
 	vertex m_Dest;
 	int m_Cap;
-	int m_Flow = 0;
-	Edge* m_NegEdge = (Edge*)malloc(sizeof(Edge));
+	int m_Flow;
+	Edge* m_NegEdge = (Edge*)malloc(sizeof(Edge)); // DON'T FORGET TO DELETE
 
 public:
-	Edge(int src, int dest, int cap, int flow, Edge* negEdge = NULL);
+	Edge(int src, int dest, int cap, int flow = 0, Edge* negEdge = NULL);
 	Edge CreateEdge(int src, int dest, int cap, int flow);
 	vertex GetSrc() {return m_Src;}
 	vertex GetDest() { return m_Dest; }

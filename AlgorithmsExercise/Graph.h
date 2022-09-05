@@ -17,7 +17,9 @@ private:
 public:
 	void MakeEmptyGraph(int n);
 	list<neighbor> GetAdjList(vertex u);
+	list<neighbor>* SetAdjList(vertex u);
 	void AddEdge(vertex u, vertex v, int c);
+	Edge& GetEdgePtr(vertex u ,vertex v);
 	void RemoveEdge(vertex u, vertex v);
 	void PrintGraph();
 	void PrintAdjList(vertex u);

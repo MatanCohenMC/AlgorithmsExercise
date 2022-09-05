@@ -19,26 +19,26 @@ int main()
 	vertex s, t;
 	Graph G;
 
+
 	initParams(&n, &m, &s, &t);
 	G.MakeEmptyGraph(n);
 	list<Edge> listOfEdges; // not really needed
 	initListOfEdges(n,m, &listOfEdges, &G);
-	// G.AddNegativeEdges();
 	G.PrintGraph(); // JUST FOR CHECKING
 
 
-	cout << "\n";
-	int i;
-	for (i = 1; i <= n; i++)
-	{
-		for (auto v : G.GetAdjList(i))
-		{
-			v.second.PrintEdge();
-			cout << " - ";
-			v.second.GetNegEdge()->PrintEdge();
-			cout << "\n";
-		}
-	}
+	//cout << "\n";
+	//int i;
+	//for (i = 1; i <= n; i++)
+	//{
+	//	for (auto v : G.GetAdjList(i))
+	//	{
+	//		v.second.PrintEdge();
+	//		cout << " - ";
+	//		v.second.GetNegEdge()->PrintEdge();
+	//		cout << "\n";
+	//	}
+	//}
 
 
 	FlowNetwork flowNetWork(&G, s, t);
