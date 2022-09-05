@@ -43,23 +43,24 @@ int FlowNetwork::FFbyBFS()
 		// findPathInGraph(m_Graph, &P, m_S, m_T);
 		int CfP = findResidualCap(residualGraph, RP);
 		updatePathInGraph(m_Graph, &P, CfP);
-		updatePathInResidualGraph(m_Graph, residualGraph ,&P,&RP);
+		updatePathInResidualGraph(&m_Graph, &residualGraph ,&P,&RP);
 		maxFlow += CfP;
 
 
-		printD();
+		
 		m_Graph.PrintGraph();
+		cout << "/////////////////////////////////////// \n";
 		residualGraph.PrintGraph();
 
 		BFS(residualGraph, m_S);
-
+		printD();
 	
 	}
 
 	return maxFlow;
 }
 
-void FlowNetwork::updatePathInResidualGraph(Graph G, Graph RG, list<Edge*>* P, list<Edge*>* RP)
+void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG, list<Edge*>* P, list<Edge*>* RP)
 {
 	//list<Edge*>::iterator itrP;
 	//list<Edge*>::iterator itrRP;
@@ -76,75 +77,187 @@ void FlowNetwork::updatePathInResidualGraph(Graph G, Graph RG, list<Edge*>* P, l
 	//	++itrRP;
 	//}
 
+	/////////////////////////////////////////////////// best one yet
+	//vertex u = m_T;
+	//list<neighbor> AdjList;
+	//Edge* edgePtrInG, *edgePtrInRG;
+	//
+
+	//while (p[u] != NULL)
+	//{
+	//	edgePtrInG = &G.GetEdgePtr(p[u], u);
+	//	edgePtrInRG = &RG.GetEdgePtr(p[u], u);
+
+	//	edgePtrInRG->SetCap(edgePtrInG->GetCap() - edgePtrInG->GetFlow()); // Cf(u,v) = C(u,v) - f(u,v)
+
+	//	edgePtrInRG->GetNegEdge()->SetCap(edgePtrInG->GetNegEdge()->GetCap() - edgePtrInG->GetNegEdge()->GetFlow()); // Cf(v,u) = C(v,u) - f(v,u)
+
+	//	u = p[u];
+	//}
+	/////////////////////////////////////////////////
 
 	vertex u = m_T;
-	list<neighbor> AdjList;
-	Edge* edgePtrInG, *edgePtrInRG;
-	
+	list<neighbor>::iterator itrG, itrRG;
+	int edgeInGcap, edgeInGflow, negEdgeInGcap, negEdgeInGflow;
+
+	//while (p[u] != NULL)
+	//{
+	//	list<neighbor>* AdjListG = G.SetAdjList(p[u]);
+	//	itrG = AdjListG->begin();
+	//	while (AdjListG->end() != itrG)
+	//	{
+	//		if (itrG->first == u)
+	//		{
+	//			edgeInGcap = itrG->second.GetCap();
+	//			edgeInGflow = itrG->second.GetFlow();
+	//			negEdgeInGcap = itrG->second.GetNegEdge()->GetCap();
+	//			negEdgeInGflow = itrG->second.GetNegEdge()->GetFlow();
+	//			break;
+	//		}
+	//		++itrG;
+	//	}
+
+	//	list<neighbor>* AdjListRG = RG.SetAdjList(p[u]);
+	//	itrRG = AdjListRG->begin();
+	//	while (AdjListRG->end() != itrRG)
+	//	{
+	//		if (itrRG->first == u)
+	//		{
+	//			itrRG->second.SetCap(edgeInGcap - edgeInGflow);
+	//			itrRG->second.GetNegEdge()->SetCap(negEdgeInGcap - negEdgeInGflow);
+	//			break;
+	//		}
+	//		++itrRG;
+	//	}
+
+	//	u = p[u];
+	//}
+	/////////////////////////////////////////////////////////////////////////////
+
+	list<neighbor>::iterator itrPU;
+	list<neighbor>::iterator itrU;
 
 	while (p[u] != NULL)
 	{
-		edgePtrInG = &G.GetEdgePtr(p[u], u);
-		edgePtrInRG = &RG.GetEdgePtr(p[u], u);
+		list<neighbor>* AdjListG = G->SetAdjList(p[u]);
+		itrG = AdjListG->begin();
+		while (AdjListG->end() != itrG)
+		{
+			if (itrG->first == u)
+			{
+				edgeInGcap = itrG->second.GetCap();
+				edgeInGflow = itrG->second.GetFlow();
+				negEdgeInGcap = itrG->second.GetNegEdge()->GetCap();
+				negEdgeInGflow = itrG->second.GetNegEdge()->GetFlow();
+				break;
+			}
+			++itrG;
+		}
 
-		edgePtrInRG->SetCap(edgePtrInG->GetCap() - edgePtrInG->GetFlow()); // Cf(u,v) = C(u,v) - f(u,v)
+		list<neighbor>* AdjListPU = RG->SetAdjList(p[u]);
+		itrPU = AdjListPU->begin();
+		list<neighbor>* AdjListU = RG->SetAdjList(u);
+		itrU = AdjListU->begin();
 
-		edgePtrInRG->GetNegEdge()->SetCap(edgePtrInG->GetNegEdge()->GetCap() - edgePtrInG->GetNegEdge()->GetFlow()); // Cf(v,u) = C(v,u) - f(v,u)
+		while (AdjListPU->end() != itrPU)
+		{
+			if (itrPU->first == u)
+			{
+				itrPU->second.SetCap(edgeInGcap - edgeInGflow);
+				break;
+			}
+
+			++itrPU;
+		}
+
+		while (AdjListU->end() != itrU)
+		{
+			if (itrU->first == p[u])
+			{
+				itrU->second.SetCap(negEdgeInGcap - negEdgeInGflow);
+				break;
+			}
+
+			++itrU;
+		}
 
 		u = p[u];
 	}
+
+
+
 }
 
 void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
 {
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//int newFlow;
+	//vertex u = m_T;
+	//list<neighbor> AdjList;
+	//Edge* edgePtr;
+	//while (p[u] != NULL)
+	//{
+	//	list<neighbor>* AdjListggggggg = m_Graph.SetAdjList(p[u]);       best one so far
+	//	for (auto i : *AdjListggggggg)
+	//	{
+	//		if (i.first == u)
+	//		{
+	//			newFlow = i.second.GetFlow() + CfP;
+	//			i.second.SetFlow(newFlow);
+	//			i.second.GetNegEdge()->SetFlow(-newFlow);
+	//			break;
+	//		}
+
+	//	}
+	//	u = p[u];
+	//}
+
+
+
 	int newFlow;
 	vertex u = m_T;
-	list<neighbor> AdjList;
-	Edge* edgePtr;
-	
-	/*while (p[u] != NULL)
-	{
-		edgePtr = &G.GetEdgePtr(p[u], u);
-		newFlow = edgePtr->GetFlow() + CfP;
-		edgePtr->SetFlow(newFlow);
-		edgePtr->GetNegEdge()->SetFlow(-newFlow);
-
-		u = p[u];
-	}*/
-
-
+	list<neighbor>::iterator itrPU;
+	list<neighbor>::iterator itrU;
 
 	while (p[u] != NULL)
 	{
-		list<neighbor>* AdjListggggggg = m_Graph.SetAdjList(p[u]);
-		for (auto i : *AdjListggggggg)
+		list<neighbor>* AdjListPU = m_Graph.SetAdjList(p[u]);
+		itrPU = AdjListPU->begin();
+		list<neighbor>* AdjListU = m_Graph.SetAdjList(u);
+		itrU = AdjListU->begin();
+
+		while (AdjListPU->end() != itrPU)
 		{
-			if (i.first == u)
+			if (itrPU->first == u)
 			{
-				newFlow = i.second.GetFlow() + CfP;;
-				i.second.SetFlow(newFlow);
-				i.second.GetNegEdge()->SetFlow(-newFlow);
+				newFlow = itrPU->second.GetFlow() + CfP;
+				itrPU->second.SetFlow(newFlow);
+				//Edge* e = itr->second.GetNegEdge();
+				//e->SetFlow(-newFlow);
+				//// itr->second.GetNegEdge()->SetFlow(-newFlow);
+				break;
 			}
+
+			++itrPU;
 		}
-	u = p[u];
-	}
 
+		while (AdjListU->end() != itrU)
+		{
+			if (itrU->first == p[u])
+			{
+				itrU->second.SetFlow(-newFlow);
+				//Edge* e = itr->second.GetNegEdge();
+				//e->SetFlow(-newFlow);
+				//// itr->second.GetNegEdge()->SetFlow(-newFlow);
+				break;
+			}
 
-
-
-	/*vertex u = m_T;
-	list<neighbor> AdjList;
-	Edge* edgePtr;
-	edgePtr = &G.GetEdgePtr(p[u], u);
-	u = p[u];
-
-	while (p[u] != NULL)
-	{
-		edgePtr = &G.GetEdgePtr(p[u], u);
-
+			++itrU;
+		}
 
 		u = p[u];
-	}*/
+	}
 }
 
 int FlowNetwork::findResidualCap(Graph G, list<Edge*> P)

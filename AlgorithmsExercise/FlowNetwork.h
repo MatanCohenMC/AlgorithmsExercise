@@ -22,7 +22,7 @@ public:
 	void findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t);
 	int findResidualCap(Graph G, list<Edge*> P);
 	void updatePathInGraph(Graph G, list<Edge*>* P, int CfP);
-	void updatePathInResidualGraph(Graph G, Graph RG, list<Edge*>* P, list<Edge*>* RP);
+	void updatePathInResidualGraph(Graph *G, Graph *RG, list<Edge*>* P, list<Edge*>* RP);
 	void printD();
 };
 
