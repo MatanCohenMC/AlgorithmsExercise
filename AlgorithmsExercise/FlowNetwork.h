@@ -17,7 +17,7 @@ public:
 	void BFS(Graph G, vertex s);
 	void Dijkstra(Graph G, int weight, vertex s);
 	void Init(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
-	int FFbyBFS();
+	int FFbyBFS(vector<vertex>* S, vector<vertex>* T);
 	// FFbyDyxtra
 	void findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t);
 	int findResidualCap(Graph G, list<Edge*> P);

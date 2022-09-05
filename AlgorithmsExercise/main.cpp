@@ -11,6 +11,7 @@ int getWholePositiveNum();
 int getWholePositiveOrZeroNum();
 bool ifNumIsWhole(float num);
 int getNumInRange(int numOfVertices);
+void printMinCut(vector<vertex> S, vector<vertex> T);
 
 
 int main()
@@ -18,6 +19,8 @@ int main()
 	int n, m, maxFlow;
 	vertex s, t;
 	Graph G;
+	vector<vertex> S;
+	vector<vertex> T;
 
 
 	initParams(&n, &m, &s, &t);
@@ -42,10 +45,10 @@ int main()
 
 
 	FlowNetwork flowNetWork(&G, s, t);
-
-	maxFlow = flowNetWork.FFbyBFS();
-	cout << "Max flow by FF by BFS:" << maxFlow << "\n";
-
+	maxFlow = flowNetWork.FFbyBFS(&S, &T);
+	cout << "BFS Methhod:\n";
+	cout << "Max flow = " << maxFlow << "\n";
+	printMinCut(S,T);
 
 
 	// Test queue
@@ -157,4 +160,20 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 	}
 
 	graph->AddNegativeEdges();
+}
+
+void printMinCut(vector<vertex> S, vector<vertex> T)
+{
+	cout << "Min cut: S = ";
+	for (auto i : S)
+	{
+		cout << i << ",";
+	}
+	cout << "\b" << ". ";
+	cout << "T = ";
+	for (auto i : T)
+	{
+		cout << i << ",";
+	}
+	cout << "\b" << ". " << "\n";
 }

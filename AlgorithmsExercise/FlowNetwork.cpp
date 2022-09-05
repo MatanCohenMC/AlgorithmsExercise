@@ -13,7 +13,7 @@ FlowNetwork::FlowNetwork(Graph* G, vertex s, vertex t)
 
 
 
-int FlowNetwork::FFbyBFS()
+int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 {
 	int maxFlow = 0;
 	list<neighbor> AdjList;
@@ -21,17 +21,6 @@ int FlowNetwork::FFbyBFS()
 	P.clear();
 	RP.clear();
 	int amountOfVertices = m_Graph.GetAmountOfVertices();
-
-	/*for (int i = 1 ; i <= amountOfVertices; i++)
-	{
-		AdjList = m_Graph.GetAdjList(i);
-		for (auto e : AdjList)
-		{
-			e.second.SetFlow(0);
-			e.second.GetNegEdge()->SetFlow(0);
-		}
-	}*/
-
 	Graph residualGraph = m_Graph;
 	BFS(residualGraph, m_S);
 
@@ -39,14 +28,10 @@ int FlowNetwork::FFbyBFS()
 
 	while(d[m_T] != numeric_limits<int>::max())
 	{
-		// findPathInGraph(residualGraph, RP, m_S, m_T);
-		// findPathInGraph(m_Graph, &P, m_S, m_T);
 		int CfP = findResidualCap(residualGraph, RP);
 		updatePathInGraph(m_Graph, &P, CfP);
 		updatePathInResidualGraph(&m_Graph, &residualGraph ,&P,&RP);
 		maxFlow += CfP;
-
-
 		
 		m_Graph.PrintGraph();
 		cout << "/////////////////////////////////////// \n";
@@ -57,6 +42,20 @@ int FlowNetwork::FFbyBFS()
 	
 	}
 
+	BFS(residualGraph, m_S);
+	S->clear(); T->clear();
+	for (int i=1; i <= amountOfVertices ; i++)
+	{
+		if (d[i] != numeric_limits<int>::max())
+		{
+			S->push_back(i);
+		}
+		else
+		{
+			T->push_back(i);
+		}
+	}
+	
 	return maxFlow;
 }
 
