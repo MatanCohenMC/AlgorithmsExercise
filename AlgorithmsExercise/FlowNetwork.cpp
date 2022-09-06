@@ -59,6 +59,57 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 	return maxFlow;
 }
 
+int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vertex>* T)
+{
+	m_S = s;
+	m_T = t;
+	int maxFlow = 0;
+	list<neighbor> AdjList;
+	list<Edge*> RP, P;
+	P.clear();
+	RP.clear();
+	int amountOfVertices = m_Graph.GetAmountOfVertices();
+	Graph residualGraph = m_Graph;
+
+	// BFS(residualGraph, m_S); // dikstra
+	Dijkstra(residualGraph, m_S);
+
+	printD();
+
+	while (d[m_T] != -1)
+	{
+		int CfP = findResidualCap(residualGraph, RP);
+		updatePathInGraph(m_Graph, &P, CfP);
+		updatePathInResidualGraph(&m_Graph, &residualGraph, &P, &RP);
+		maxFlow += CfP;
+
+		m_Graph.PrintGraph();
+		cout << "/////////////////////////////////////// \n";
+		residualGraph.PrintGraph();
+
+		//BFS(residualGraph, m_S); // dikstra
+		Dijkstra(residualGraph, m_S);
+		printD();
+
+	}
+
+	BFS(residualGraph, m_S);
+	S->clear(); T->clear();
+	for (int i = 1; i <= amountOfVertices; i++)
+	{
+		if (d[i] != numeric_limits<int>::max())
+		{
+			S->push_back(i);
+		}
+		else
+		{
+			T->push_back(i);
+		}
+	}
+
+	return maxFlow;
+}
+
 void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG, list<Edge*>* P, list<Edge*>* RP)
 {
 	//list<Edge*>::iterator itrP;
@@ -364,7 +415,6 @@ void FlowNetwork::findPathInGraph(Graph G, list<Edge*> *P, vertex s, vertex t)
 
 }
 
-
 void FlowNetwork::BFS(Graph G, vertex s)
 {
 	vertex u;
@@ -401,72 +451,63 @@ void FlowNetwork::BFS(Graph G, vertex s)
 			}
 		}
 	}
-	// in d[t] there is the length of the lightest way from s to t 
 }
 
-
-
-
-//void FlowNetwork::BFS(Graph G, vertex s)
-//{
-//	vertex u;
-//	vector<int> d;
-//	list<neighbor> AdjList;
-//	queue<vertex> Q;
-//
-//	d.resize(G.GetAmountOfVertices() + 1);
-//
-//	for (int i = 1; i <= G.GetAmountOfVertices(); i++)
-//	{
-//		d[i] = INFINITY;
-//	}
-//
-//	Q.push(s);
-//	d[s] = 0;
-//
-//	while (!Q.empty())
-//	{
-//		u = Q.front();
-//		Q.pop();
-//
-//		AdjList = G.GetAdjList(u);
-//		for (auto v : AdjList)
-//		{
-//			if (d[v.first] == INFINITY)
-//			{
-//				d[v.first] = d[u] + 1;
-//				Q.push(v.first);
-//			}
-//		}
-//	}
-//
-//
-//	// in d[t] there is the length of the lightest way from s to t 
-//}
-
-
-void FlowNetwork::Dijkstra(Graph G, int weight, vertex s)
+void FlowNetwork::Dijkstra(Graph G, vertex s)
 {
 	PriorityQueue Q;
-
-	Init(G, &d, &p, s);
-
+	Pair u;
+	vertex v;
+	int Wuv, minCap;
+	list<neighbor>::iterator itrU;
+	InitDijkstra(G, &d, &p, s);
+	Edge* e = (Edge*)malloc(sizeof(Edge));
 	Q.BuildPriorityQueue(G.GetAmountOfVertices(), d);
 
 	while (!Q.IsEmpty())
 	{
-		// delete max
-		// ...
+		u = Q.DeleteMax();
+		list<neighbor>* AdjListU = m_Graph.SetAdjList(u.ver);
+		itrU = AdjListU->begin();
+
+		while (AdjListU->end() != itrU)
+		{
+			if (itrU->second.GetCap() != 0)
+			{
+				v = itrU->first;
+				*e = G.GetEdgePtr(u.ver, v);
+				Wuv = e->GetCap();
+
+				if (u.ver == m_S)
+				{
+					minCap = Wuv;
+				}
+				else
+				{
+					minCap = min(d[u.ver], Wuv);
+				}
+				
+
+				if (minCap > d[v])
+				{
+					d[v] = minCap;
+					p[v] = u.ver;
+					Q.IncreaseKey(v, d[v]);
+				}
+			}
+
+			++itrU;
+		}
 	}
 
 }
 
 // Initiate the d and p vectors
-void FlowNetwork::Init(Graph G, vector<int>* d, vector<vertex>* p, vertex s)
+void FlowNetwork::InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, vertex s)
 {
 	for (int v = 1; v <= G.GetAmountOfVertices(); v++)
 	{
-		d->at(v) = INFINITY;
+		d->at(v) = -1;
 	}
 
 	d->at(s) = 0;

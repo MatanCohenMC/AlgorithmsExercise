@@ -42,13 +42,24 @@ int main()
 	//		cout << "\n";
 	//	}
 	//}
+	Graph G2 = G;
 
+	FlowNetwork flowNetWorkForBFS(&G, s, t);
+	FlowNetwork flowNetWorkForDijkstra(&G2, s, t);
 
-	FlowNetwork flowNetWork(&G, s, t);
-	maxFlow = flowNetWork.FFbyBFS(&S, &T);
+	maxFlow = flowNetWorkForBFS.FFbyBFS(&S, &T);
 	cout << "BFS Methhod:\n";
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S,T);
+
+	S.clear(); T.clear();
+	
+	maxFlow = flowNetWorkForDijkstra.FFbyDijkstra(s,t, &S, &T);
+	cout << "Greedy Methhod:\n";
+	cout << "Max flow = " << maxFlow << "\n";
+	printMinCut(S, T);
+
+
 
 
 	// Test queue

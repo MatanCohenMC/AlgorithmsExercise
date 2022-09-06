@@ -28,4 +28,5 @@ public:
 	void PrintQueue();
 	void Swap(int index1, int index2);
 	bool IsEmpty();
+	void IncreaseKey(vertex v, int dV);
 };

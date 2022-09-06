@@ -98,3 +98,34 @@ bool PriorityQueue::IsEmpty()
 {
 	return m_MaxHeap.empty();
 }
+
+void PriorityQueue::IncreaseKey(vertex v, int dV) // ??????????????
+{
+	/*for (int i = 0; i < m_MaxHeap.size(); i++)
+	{
+		if (m_MaxHeap[i].ver == v)
+		{
+			m_MaxHeap[i].priority = dV;
+			break;
+		}
+	}*/
+	int i;
+	for (i = 0; i < m_MaxHeap.size(); i++)
+	{
+		if (m_MaxHeap[i].ver == v)
+		{
+			m_MaxHeap[i].priority = dV;
+			break;
+		}
+	}
+
+	int j = i;
+	//m_MaxHeap[j].priority = dV;
+	while ((j > 0) && (m_MaxHeap[Parent(j)].priority < dV))
+	{
+		//m_MaxHeap[j].ver = m_MaxHeap[Parent(j)].ver;
+		//m_MaxHeap[j].priority = m_MaxHeap[Parent(j)].priority;
+		Swap(Parent(j), j);
+		j = Parent(j);
+	}
+}

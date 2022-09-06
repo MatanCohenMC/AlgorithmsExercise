@@ -15,10 +15,10 @@ private:
 public:
 	FlowNetwork(Graph* G, vertex s, vertex t);
 	void BFS(Graph G, vertex s);
-	void Dijkstra(Graph G, int weight, vertex s);
-	void Init(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
+	void Dijkstra(Graph G, vertex s);
+	void InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
 	int FFbyBFS(vector<vertex>* S, vector<vertex>* T);
-	// FFbyDyxtra
+	int FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vertex>* T);
 	void findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t);
 	int findResidualCap(Graph G, list<Edge*> P);
 	void updatePathInGraph(Graph G, list<Edge*>* P, int CfP);
