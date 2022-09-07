@@ -1,6 +1,7 @@
 /*
  
-	This program solves the maximum flow problem in two different ways.
+	This program solves the maximum flow problem in two different ways
+	with the Ford Fulkerson algorithm.
 	The problem is finding a feasible flow through a flow network that
 	obtains the maximum possible flow rate.
 
