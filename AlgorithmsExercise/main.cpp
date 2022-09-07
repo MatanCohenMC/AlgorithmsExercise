@@ -28,7 +28,7 @@ int main()
 	G.MakeEmptyGraph(n);
 	list<Edge> listOfEdges; // not really needed
 	initListOfEdges(n,m, &listOfEdges, &G);
-	G.PrintGraph(); // JUST FOR CHECKING
+	//G.PrintGraph(); // JUST FOR CHECKING
 
 	Graph G2 = G;
 
@@ -36,14 +36,14 @@ int main()
 	FlowNetwork flowNetWorkForDijkstra(&G2, s, t);
 
 	maxFlow = flowNetWorkForBFS.FFbyBFS(&S, &T);
-	cout << "BFS Methhod:\n";
+	cout << "BFS Method:\n";
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S,T);
 
 	S.clear(); T.clear();
 	
 	maxFlow = flowNetWorkForDijkstra.FFbyDijkstra(s,t, &S, &T);
-	cout << "Greedy Methhod:\n";
+	cout << "Greedy Method:\n";
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S, T);
 
@@ -73,13 +73,13 @@ int main()
 // get the number of vertices, number of edges, the number representing s and the number representing s
 void initParams(int* n, int* m, vertex* s, vertex* t)
 {
-	cout << "Please enter the number of vertices.\n";
+	//cout << "Please enter the number of vertices.\n";
 	*n = getWholePositiveOrZeroNum();
-	cout << "Please enter the number of edges.\n";
+	//cout << "Please enter the number of edges.\n";
 	*m = getWholePositiveOrZeroNum();
-	cout << "Please enter the number that represent S.\n";
+	//cout << "Please enter the number that represent S.\n";
 	*s = getNumInRange(*n);
-	cout << "Please enter the number that represent T.\n";
+	//cout << "Please enter the number that represent T.\n";
 	*t = getNumInRange(*n);
 }
 
@@ -154,7 +154,7 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 
 	for (int i=0 ; i < m ; i++)
 	{
-		cout << "Please enter the edge parameters (src, dest, weight):\n";
+		//cout << "Please enter the edge parameters (src, dest, weight):\n";
 		src = getNumInRange(n);
 		dest = getNumInRange(n);
 		cap = getWholePositiveNum();
@@ -171,16 +171,71 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 
 void printMinCut(vector<vertex> S, vector<vertex> T)
 {
+	//cout << "Min cut: S = ";
+	//for (auto i : S)
+	//{
+	//	cout << i << ", ";
+	//}
+
+	//cout << "\b\b" << ". ";
+	//cout << "T = ";
+	//for (auto i : T)
+	//{
+	//	cout << i << ", ";
+	//}
+
+	//cout << "\b\b" << ". " << "\n";
+
+	//////////////////////////////////////////
+
+	/*int i,j;
+	cout << "Min cut: S = ";
+
+	for (i = 0; i < S.size() - 1; i++)
+	{
+		cout << S.at(i) << ", ";
+	}
+	cout << i << ". ";
+
+	cout << "T = ";
+	for (j = 0; j < T.size() - 1; j++)
+	{
+		cout << T.at(j) << ", ";
+	}
+	cout << j << "\n";*/
+
+	/////////////////////////////////////////////
+
+	int countI = 0;
+	int sSize = S.size();
+	int tSize = T.size();
+
 	cout << "Min cut: S = ";
 	for (auto i : S)
 	{
-		cout << i << ",";
+		countI++;
+		cout << i;
+		if (countI < sSize)
+		{
+			cout << ", ";
+		}
+		else
+		{
+			cout << ". ";
+		}
 	}
-	cout << "\b" << ". ";
+
+	countI = 0;
 	cout << "T = ";
 	for (auto i : T)
 	{
-		cout << i << ",";
+		countI++;
+		cout << i;
+		if (countI < tSize)
+		{
+			cout << ", ";
+		}
 	}
-	cout << "\b" << ". " << "\n";
+
+	cout << "\n";
 }

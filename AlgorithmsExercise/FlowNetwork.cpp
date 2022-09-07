@@ -26,7 +26,7 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 	Graph residualGraph = m_Graph;
 	BFS(residualGraph, m_S);
 
-	printD();
+	//printD();
 
 	while(d[m_T] != max)
 	{
@@ -76,7 +76,7 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 
 	Dijkstra(residualGraph, m_S);
 
-	printD();
+	//printD();
 
 	while (d[m_T] != -1 && d[m_T] != 0)
 	{
