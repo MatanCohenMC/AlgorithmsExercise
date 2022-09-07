@@ -16,14 +16,9 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 	int maxFlow = 0;
 	int max = INT8_MAX;
 	list<neighbor> AdjList;
-	list<Edge*> RP, P;
-	P.clear();
-	RP.clear();
 	int amountOfVertices = m_Graph.GetAmountOfVertices();
 	Graph residualGraph = m_Graph;
 	BFS(residualGraph, m_S);
-
-	//printD();
 
 	while(d[m_T] != max)
 	{
@@ -31,18 +26,10 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 		updatePathInGraph(CfP);
 		updatePathInResidualGraph(&m_Graph, &residualGraph);
 		maxFlow += CfP;
-		
-		/*m_Graph.PrintGraph();
-		cout << "/////////////////////////////////////// \n";
-		residualGraph.PrintGraph();*/
-
 		BFS(residualGraph, m_S);
-		//printD();
-	
 	}
 
 	BFS(residualGraph, m_S);
-	S->clear(); T->clear();
 	for (int i=1; i <= amountOfVertices ; i++)
 	{
 		if (d[i] != max)
@@ -58,6 +45,7 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 	return maxFlow;
 }
 
+// Ford Fulkerson algorithm using Dijkstra
 int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vertex>* T)
 {
 	m_S = s;
@@ -65,34 +53,20 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	int maxFlow = 0;
 	int max = INT8_MAX;
 	list<neighbor> AdjList;
-	list<Edge*> RP, P;
-	P.clear();
-	RP.clear();
 	int amountOfVertices = m_Graph.GetAmountOfVertices();
 	Graph residualGraph = m_Graph;
 
 	Dijkstra(residualGraph, m_S);
-
-	//printD();
-
 	while (d[m_T] != -1 && d[m_T] != 0)
 	{
 		int CfP = findResidualCap(residualGraph);
 		updatePathInGraph(CfP);
 		updatePathInResidualGraph(&m_Graph, &residualGraph);
 		maxFlow += CfP;
-
-		//m_Graph.PrintGraph();
-		//cout << "/////////////////////////////////////// \n";
-		//residualGraph.PrintGraph();
-
 		Dijkstra(residualGraph, m_S);
-		//printD();
-
 	}
 
 	BFS(residualGraph, m_S);
-	S->clear(); T->clear();
 	for (int i = 1; i <= amountOfVertices; i++)
 	{
 		if (d[i] != max)
@@ -108,6 +82,7 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	return maxFlow;
 }
 
+// Update the path in the residual graph
 void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG)
 {
 	vertex u = m_T;
@@ -162,6 +137,7 @@ void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG)
 	}
 }
 
+// Update the path in the graph with the residual capacity
 void FlowNetwork::updatePathInGraph(int CfP)
 {
 	int newFlow = 0;
@@ -202,6 +178,7 @@ void FlowNetwork::updatePathInGraph(int CfP)
 	}
 }
 
+// Find the residual capacity
 int FlowNetwork::findResidualCap(Graph G)
 {
 	int edgeCap, minCap;
@@ -216,7 +193,6 @@ int FlowNetwork::findResidualCap(Graph G)
 	{
 		edgePtr = &G.GetEdgePtr(p[u], u);
 		edgeCap = edgePtr->GetCap();
-
 		if (edgeCap < minCap)
 		{
 			minCap = edgeCap;
@@ -333,6 +309,7 @@ void FlowNetwork::InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, verte
 	}
 }
 
+// Print the d vector
 void FlowNetwork::printD()
 {
 	cout << "d[]: ";

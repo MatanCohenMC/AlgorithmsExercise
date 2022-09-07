@@ -26,4 +26,3 @@ public:
 	int GetAmountOfVertices() { return m_AmountOfVertices; }
 	void AddNegativeEdges();
 };
-

@@ -1,3 +1,26 @@
+/*
+ 
+	This program solves the maximum flow problem in two different ways.
+	The problem is finding a feasible flow through a flow network that
+	obtains the maximum possible flow rate.
+
+	------INSTRUCTIONS-----
+	The program gets the amount of vertices.
+
+	The program gets the number of edges.
+
+	The program gets the start vertex.
+
+	The program gets the end vertex.
+
+	The program gets the edges one by one, each edge has it's source vertex, destination vertex and it's capacity.
+
+	The program uses 2 functions to solve this problem:
+	1. Using the BFS algorithm.
+	2. Using the Dijkstra algorithm.
+
+*/
+
 using namespace std;
 #include <iostream>
 #include "Graph.h"
@@ -20,14 +43,11 @@ int main()
 	Graph G;
 	vector<vertex> S;
 	vector<vertex> T;
-
-
+	S.clear(); T.clear();
 	initParams(&n, &m, &s, &t);
 	G.MakeEmptyGraph(n);
 	list<Edge> listOfEdges;
 	initListOfEdges(n,m, &listOfEdges, &G);
-	//G.PrintGraph(); // JUST FOR CHECKING
-
 	Graph G2 = G;
 	FlowNetwork flowNetWorkForBFS(&G, s, t);
 	FlowNetwork flowNetWorkForDijkstra(&G2, s, t);
@@ -42,26 +62,6 @@ int main()
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S, T);
 	freeEdges(&listOfEdges);
-
-
-	// Test queue
-	/*PriorityQueue Q;
-	vector<int> d = { -1, 7, 2 ,5, 1, 3 };
-	Q.BuildPriorityQueue(5, d);
-	Q.PrintQueue();
-	*/
-
-
-	// print to check list ///////
-	/*cout << "List of edges = { ";
-	for (Edge e : listOfEdges) {
-		cout << "(" << e.GetSrc() << ", " << e.GetDest() << ", " << e.GetCap() << ", " << e.GetFlow() << ") , ";
-	}
-	cout << "};\n";*/
-	//////////////////////////////
-
-
-	
 }
 
 // get the number of vertices, number of edges, the number representing s and the number representing s
@@ -148,16 +148,14 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 
 	for (int i=0 ; i < m ; i++)
 	{
-		//cout << "Please enter the edge parameters (src, dest, weight):\n";
+		// cout << "Please enter the edge parameters (src, dest, weight):\n";
 		src = getNumInRange(n);
 		dest = getNumInRange(n);
 		cap = getWholePositiveNum();
 		Edge newEdge(src, dest, cap, 0);
 
-		
-		graph->AddEdge(src, dest, cap); // add to graph
-
-		(*listOfEdges).push_back(newEdge); // add to edges list
+		graph->AddEdge(src, dest, cap);
+		(*listOfEdges).push_back(newEdge);
 	}
 
 	graph->AddNegativeEdges();
