@@ -16,6 +16,8 @@ FlowNetwork::FlowNetwork(Graph* G, vertex s, vertex t)
 int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 {
 	int maxFlow = 0;
+	//int max = numeric_limits<int>::max();
+	int max = INT8_MAX;
 	list<neighbor> AdjList;
 	list<Edge*> RP, P;
 	P.clear();
@@ -26,7 +28,7 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 
 	printD();
 
-	while(d[m_T] != numeric_limits<int>::max())
+	while(d[m_T] != max)
 	{
 		int CfP = findResidualCap(residualGraph, RP);
 		updatePathInGraph(m_Graph, &P, CfP);
@@ -46,7 +48,7 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 	S->clear(); T->clear();
 	for (int i=1; i <= amountOfVertices ; i++)
 	{
-		if (d[i] != numeric_limits<int>::max())
+		if (d[i] != max)
 		{
 			S->push_back(i);
 		}
@@ -64,6 +66,7 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	m_S = s;
 	m_T = t;
 	int maxFlow = 0;
+	int max = INT8_MAX;
 	list<neighbor> AdjList;
 	list<Edge*> RP, P;
 	P.clear();
@@ -71,7 +74,6 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	int amountOfVertices = m_Graph.GetAmountOfVertices();
 	Graph residualGraph = m_Graph;
 
-	// BFS(residualGraph, m_S); // dikstra
 	Dijkstra(residualGraph, m_S);
 
 	printD();
@@ -87,7 +89,6 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 		//cout << "/////////////////////////////////////// \n";
 		//residualGraph.PrintGraph();
 
-		//BFS(residualGraph, m_S); // dikstra
 		Dijkstra(residualGraph, m_S);
 		//printD();
 
@@ -97,7 +98,7 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	S->clear(); T->clear();
 	for (int i = 1; i <= amountOfVertices; i++)
 	{
-		if (d[i] != numeric_limits<int>::max())
+		if (d[i] != max)
 		{
 			S->push_back(i);
 		}
@@ -187,7 +188,7 @@ void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG, list<Edge*>* P,
 	list<neighbor>::iterator itrPU;
 	list<neighbor>::iterator itrU;
 
-	while (p[u] != NULL)
+	while (p[u] != 0)
 	{
 		list<neighbor>* AdjListG = G->SetAdjList(p[u]);
 		itrG = AdjListG->begin();
@@ -270,7 +271,7 @@ void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
 	list<neighbor>::iterator itrPU;
 	list<neighbor>::iterator itrU;
 
-	while (p[u] != NULL)
+	while (p[u] != 0)
 	{
 		list<neighbor>* AdjListPU = m_Graph.SetAdjList(p[u]);
 		itrPU = AdjListPU->begin();
@@ -320,7 +321,7 @@ int FlowNetwork::findResidualCap(Graph G, list<Edge*> P)
 	minCap = edgePtr->GetCap();
 	u = p[u];
 
-	while (p[u] != NULL)
+	while (p[u] != 0)
 	{
 		edgePtr = &G.GetEdgePtr(p[u], u);
 		edgeCap = edgePtr->GetCap();
@@ -334,25 +335,6 @@ int FlowNetwork::findResidualCap(Graph G, list<Edge*> P)
 	}
 
 	return minCap;
-
-
-
-
-
-	/*int edgeCap, minCap;
-
-	minCap = P.front()->GetCap();
-
-	for (auto edge : P)
-	{
-		edgeCap = edge->GetCap();
-		if (edgeCap < minCap)
-		{
-			minCap = edgeCap;
-		}
-	}
-
-	return minCap;*/
 }
 
 void FlowNetwork::findPathInGraph(Graph G, list<Edge*> *P, vertex s, vertex t)
@@ -361,58 +343,12 @@ void FlowNetwork::findPathInGraph(Graph G, list<Edge*> *P, vertex s, vertex t)
 	list<neighbor> AdjList;
 	Edge* edgePtr;
 
-	while (p[u] != NULL)
+	while (p[u] != 0)
 	{
 		edgePtr = &G.GetEdgePtr(p[u], u);
 		P->push_front(edgePtr);
 		u = p[u];
 	}
-
-
-	//while (p[u] != NULL)
-	//{
-	//	AdjList = G.GetAdjList(p[u]);
-	//	itr = AdjList.begin();
-
-	//	while (AdjList.end() != itr)
-	//	{
-	//		if (itr->second.GetDest() == u)
-	//		{
-	//			P->push_front(G.GetEdgePtr(p[u], u));
-
-
-	//			//Edge* e = (Edge*)malloc(sizeof(Edge));
-	//			//e = &(itr->second);
-	//			//P->push_front(e);
-	//			////P->front() = &(itr->second);
-
-	//			break;
-	//		}
-
-	//		itr++;
-	//	}
-
-	//	u = p[u];
-	//}
-
-			/*	vertex i, u = t;
-				list<neighbor> AdjList;
-
-				while (p[u] != NULL)
-				{
-					AdjList = G.GetAdjList(p[u]);
-
-					for (auto i : AdjList)
-					{
-						if (i.second.GetDest() == u)
-						{
-							P->push_front(&(i.second));
-						}
-					}
-
-					u = p[u];
-				}*/
-
 }
 
 void FlowNetwork::BFS(Graph G, vertex s)
@@ -421,12 +357,13 @@ void FlowNetwork::BFS(Graph G, vertex s)
 	list<neighbor> AdjList;
 	queue<vertex> Q;
 	int amountOfVertices = G.GetAmountOfVertices();
-
+	//int max = numeric_limits<int>::max();
+	int max = INT8_MAX;
 
 	for(int i = 1 ; i <= amountOfVertices; i++)
 	{
-		d[i] = numeric_limits<int>::max(); // infinity
-		p[i] = NULL;
+		d[i] = max; // infinity
+		p[i] = 0;
 	}
 
 	Q.push(s);
@@ -441,8 +378,8 @@ void FlowNetwork::BFS(Graph G, vertex s)
 		for(auto v : AdjList)
 		{
 			if (v.second.GetCap() != 0)
-			{
-				if (d[v.first] == numeric_limits<int>::max()) // infinity
+			{ 
+				if (d[v.first] == max) // infinity
 				{
 					d[v.first] = d[u] + 1;
 					p[v.first] = u;
@@ -451,6 +388,8 @@ void FlowNetwork::BFS(Graph G, vertex s)
 			}
 		}
 	}
+
+	
 }
 
 void FlowNetwork::Dijkstra(Graph G, vertex s)
@@ -514,7 +453,7 @@ void FlowNetwork::InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, verte
 
 	for (int v = 1; v <= G.GetAmountOfVertices(); v++)
 	{
-		p->at(v) = NULL;
+		p->at(v) = 0;
 	}
 }
 

@@ -1,6 +1,7 @@
 using namespace std;
 #include <iostream>
 #include "Graph.h"
+#include <math.h>
 #include "PriorityQueue.h"
 #include  "FlowNetwork.h"
 
@@ -29,19 +30,6 @@ int main()
 	initListOfEdges(n,m, &listOfEdges, &G);
 	G.PrintGraph(); // JUST FOR CHECKING
 
-
-	//cout << "\n";
-	//int i;
-	//for (i = 1; i <= n; i++)
-	//{
-	//	for (auto v : G.GetAdjList(i))
-	//	{
-	//		v.second.PrintEdge();
-	//		cout << " - ";
-	//		v.second.GetNegEdge()->PrintEdge();
-	//		cout << "\n";
-	//	}
-	//}
 	Graph G2 = G;
 
 	FlowNetwork flowNetWorkForBFS(&G, s, t);
@@ -133,7 +121,15 @@ int getWholePositiveNum()
 // Get a whole number
 bool ifNumIsWhole(float num)
 {
-	return floor(num) == num;
+	bool flag = false;
+	int intNum = num;
+
+	if(num - intNum == 0)
+	{
+		flag = true;
+	}
+
+	return flag;
 }
 
 // Get a whole number between 1 to n
