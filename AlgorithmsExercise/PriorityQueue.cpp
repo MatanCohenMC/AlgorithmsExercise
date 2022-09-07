@@ -4,7 +4,6 @@
 void PriorityQueue::BuildPriorityQueue(int amountOfVertices, vector<int> d)
 {
 	m_MaxHeap.resize(amountOfVertices);
-	//m_MaxHeap.clear(); // not nessecery
 
 	for (int i = 0; i < m_MaxHeap.size(); ++i)
 	{
@@ -99,17 +98,10 @@ bool PriorityQueue::IsEmpty()
 	return m_MaxHeap.empty();
 }
 
-void PriorityQueue::IncreaseKey(vertex v, int dV) // ??????????????
+// Change the priority of the vertex v in the queue to d[v]
+void PriorityQueue::IncreaseKey(vertex v, int dV)
 {
-	/*for (int i = 0; i < m_MaxHeap.size(); i++)
-	{
-		if (m_MaxHeap[i].ver == v)
-		{
-			m_MaxHeap[i].priority = dV;
-			break;
-		}
-	}*/
-	int i;
+	int i, j;
 	for (i = 0; i < m_MaxHeap.size(); i++)
 	{
 		if (m_MaxHeap[i].ver == v)
@@ -119,12 +111,9 @@ void PriorityQueue::IncreaseKey(vertex v, int dV) // ??????????????
 		}
 	}
 
-	int j = i;
-	//m_MaxHeap[j].priority = dV;
+	j = i;
 	while ((j > 0) && (m_MaxHeap[Parent(j)].priority < dV))
 	{
-		//m_MaxHeap[j].ver = m_MaxHeap[Parent(j)].ver;
-		//m_MaxHeap[j].priority = m_MaxHeap[Parent(j)].priority;
 		Swap(Parent(j), j);
 		j = Parent(j);
 	}

@@ -10,13 +10,10 @@ FlowNetwork::FlowNetwork(Graph* G, vertex s, vertex t)
 	p.resize(m_Graph.GetAmountOfVertices() + 1);
 }
 
-
-
-
+// Ford Fulkerson algorithm using BFS
 int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 {
 	int maxFlow = 0;
-	//int max = numeric_limits<int>::max();
 	int max = INT8_MAX;
 	list<neighbor> AdjList;
 	list<Edge*> RP, P;
@@ -30,9 +27,9 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 
 	while(d[m_T] != max)
 	{
-		int CfP = findResidualCap(residualGraph, RP);
-		updatePathInGraph(m_Graph, &P, CfP);
-		updatePathInResidualGraph(&m_Graph, &residualGraph ,&P,&RP);
+		int CfP = findResidualCap(residualGraph);
+		updatePathInGraph(CfP);
+		updatePathInResidualGraph(&m_Graph, &residualGraph);
 		maxFlow += CfP;
 		
 		/*m_Graph.PrintGraph();
@@ -80,9 +77,9 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 
 	while (d[m_T] != -1 && d[m_T] != 0)
 	{
-		int CfP = findResidualCap(residualGraph, RP);
-		updatePathInGraph(m_Graph, &P, CfP);
-		updatePathInResidualGraph(&m_Graph, &residualGraph, &P, &RP);
+		int CfP = findResidualCap(residualGraph);
+		updatePathInGraph(CfP);
+		updatePathInResidualGraph(&m_Graph, &residualGraph);
 		maxFlow += CfP;
 
 		//m_Graph.PrintGraph();
@@ -111,82 +108,11 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 	return maxFlow;
 }
 
-void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG, list<Edge*>* P, list<Edge*>* RP)
+void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG)
 {
-	//list<Edge*>::iterator itrP;
-	//list<Edge*>::iterator itrRP;
-	//itrP = P->begin();
-	//itrRP = RP->begin();
-
-	//while (P->end() != itrP)
-	//{
-	//	(*itrRP)->SetCap((*itrP)->GetCap() - (*itrP)->GetFlow()); // Cf(u,v) = C(u,v) - f(u,v)
-
-	//	((*itrRP)->GetNegEdge())->SetCap((*itrP)->GetNegEdge()->GetCap() - (*itrP)->GetNegEdge()->GetFlow()); // Cf(v,u) = C(v,u) - f(v,u)
-
-	//	++itrP;
-	//	++itrRP;
-	//}
-
-	/////////////////////////////////////////////////// best one yet
-	//vertex u = m_T;
-	//list<neighbor> AdjList;
-	//Edge* edgePtrInG, *edgePtrInRG;
-	//
-
-	//while (p[u] != NULL)
-	//{
-	//	edgePtrInG = &G.GetEdgePtr(p[u], u);
-	//	edgePtrInRG = &RG.GetEdgePtr(p[u], u);
-
-	//	edgePtrInRG->SetCap(edgePtrInG->GetCap() - edgePtrInG->GetFlow()); // Cf(u,v) = C(u,v) - f(u,v)
-
-	//	edgePtrInRG->GetNegEdge()->SetCap(edgePtrInG->GetNegEdge()->GetCap() - edgePtrInG->GetNegEdge()->GetFlow()); // Cf(v,u) = C(v,u) - f(v,u)
-
-	//	u = p[u];
-	//}
-	/////////////////////////////////////////////////
-
 	vertex u = m_T;
-	list<neighbor>::iterator itrG, itrRG;
+	list<neighbor>::iterator itrG, itrRG, itrPU, itrU;
 	int edgeInGcap, edgeInGflow, negEdgeInGcap, negEdgeInGflow;
-
-	//while (p[u] != NULL)
-	//{
-	//	list<neighbor>* AdjListG = G.SetAdjList(p[u]);
-	//	itrG = AdjListG->begin();
-	//	while (AdjListG->end() != itrG)
-	//	{
-	//		if (itrG->first == u)
-	//		{
-	//			edgeInGcap = itrG->second.GetCap();
-	//			edgeInGflow = itrG->second.GetFlow();
-	//			negEdgeInGcap = itrG->second.GetNegEdge()->GetCap();
-	//			negEdgeInGflow = itrG->second.GetNegEdge()->GetFlow();
-	//			break;
-	//		}
-	//		++itrG;
-	//	}
-
-	//	list<neighbor>* AdjListRG = RG.SetAdjList(p[u]);
-	//	itrRG = AdjListRG->begin();
-	//	while (AdjListRG->end() != itrRG)
-	//	{
-	//		if (itrRG->first == u)
-	//		{
-	//			itrRG->second.SetCap(edgeInGcap - edgeInGflow);
-	//			itrRG->second.GetNegEdge()->SetCap(negEdgeInGcap - negEdgeInGflow);
-	//			break;
-	//		}
-	//		++itrRG;
-	//	}
-
-	//	u = p[u];
-	//}
-	/////////////////////////////////////////////////////////////////////////////
-
-	list<neighbor>::iterator itrPU;
-	list<neighbor>::iterator itrU;
 
 	while (p[u] != 0)
 	{
@@ -234,48 +160,19 @@ void FlowNetwork::updatePathInResidualGraph(Graph* G, Graph* RG, list<Edge*>* P,
 
 		u = p[u];
 	}
-
-
-
 }
 
-void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
+void FlowNetwork::updatePathInGraph(int CfP)
 {
-	///////////////////////////////////////////////////////////////////////////////////
-
-	//int newFlow;
-	//vertex u = m_T;
-	//list<neighbor> AdjList;
-	//Edge* edgePtr;
-	//while (p[u] != NULL)
-	//{
-	//	list<neighbor>* AdjListggggggg = m_Graph.SetAdjList(p[u]);       best one so far
-	//	for (auto i : *AdjListggggggg)
-	//	{
-	//		if (i.first == u)
-	//		{
-	//			newFlow = i.second.GetFlow() + CfP;
-	//			i.second.SetFlow(newFlow);
-	//			i.second.GetNegEdge()->SetFlow(-newFlow);
-	//			break;
-	//		}
-
-	//	}
-	//	u = p[u];
-	//}
-
-
-
-	int newFlow;
+	int newFlow = 0;
 	vertex u = m_T;
-	list<neighbor>::iterator itrPU;
-	list<neighbor>::iterator itrU;
+	list<neighbor>::iterator itrPU, itrU;
 
 	while (p[u] != 0)
 	{
 		list<neighbor>* AdjListPU = m_Graph.SetAdjList(p[u]);
-		itrPU = AdjListPU->begin();
 		list<neighbor>* AdjListU = m_Graph.SetAdjList(u);
+		itrPU = AdjListPU->begin();
 		itrU = AdjListU->begin();
 
 		while (AdjListPU->end() != itrPU)
@@ -284,9 +181,6 @@ void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
 			{
 				newFlow = itrPU->second.GetFlow() + CfP;
 				itrPU->second.SetFlow(newFlow);
-				//Edge* e = itr->second.GetNegEdge();
-				//e->SetFlow(-newFlow);
-				//// itr->second.GetNegEdge()->SetFlow(-newFlow);
 				break;
 			}
 
@@ -298,9 +192,6 @@ void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
 			if (itrU->first == p[u])
 			{
 				itrU->second.SetFlow(-newFlow);
-				//Edge* e = itr->second.GetNegEdge();
-				//e->SetFlow(-newFlow);
-				//// itr->second.GetNegEdge()->SetFlow(-newFlow);
 				break;
 			}
 
@@ -311,7 +202,7 @@ void FlowNetwork::updatePathInGraph(Graph G, list<Edge*>* P, int CfP)
 	}
 }
 
-int FlowNetwork::findResidualCap(Graph G, list<Edge*> P)
+int FlowNetwork::findResidualCap(Graph G)
 {
 	int edgeCap, minCap;
 	vertex u = m_T;
@@ -337,32 +228,18 @@ int FlowNetwork::findResidualCap(Graph G, list<Edge*> P)
 	return minCap;
 }
 
-void FlowNetwork::findPathInGraph(Graph G, list<Edge*> *P, vertex s, vertex t)
-{
-	vertex u = t;
-	list<neighbor> AdjList;
-	Edge* edgePtr;
-
-	while (p[u] != 0)
-	{
-		edgePtr = &G.GetEdgePtr(p[u], u);
-		P->push_front(edgePtr);
-		u = p[u];
-	}
-}
-
+// BFS algorithm
 void FlowNetwork::BFS(Graph G, vertex s)
 {
 	vertex u;
 	list<neighbor> AdjList;
 	queue<vertex> Q;
 	int amountOfVertices = G.GetAmountOfVertices();
-	//int max = numeric_limits<int>::max();
 	int max = INT8_MAX;
 
 	for(int i = 1 ; i <= amountOfVertices; i++)
 	{
-		d[i] = max; // infinity
+		d[i] = max; // Infinity
 		p[i] = 0;
 	}
 
@@ -379,7 +256,7 @@ void FlowNetwork::BFS(Graph G, vertex s)
 		{
 			if (v.second.GetCap() != 0)
 			{ 
-				if (d[v.first] == max) // infinity
+				if (d[v.first] == max) // Infinity
 				{
 					d[v.first] = d[u] + 1;
 					p[v.first] = u;
@@ -388,10 +265,9 @@ void FlowNetwork::BFS(Graph G, vertex s)
 			}
 		}
 	}
-
-	
 }
 
+// Dijkstra algorithm
 void FlowNetwork::Dijkstra(Graph G, vertex s)
 {
 	PriorityQueue Q;
@@ -399,8 +275,9 @@ void FlowNetwork::Dijkstra(Graph G, vertex s)
 	vertex v;
 	int Wuv, minCap;
 	list<neighbor>::iterator itrU;
-	InitDijkstra(G, &d, &p, s);
 	Edge* e = (Edge*)malloc(sizeof(Edge));
+
+	InitDijkstra(G, &d, &p, s);
 	Q.BuildPriorityQueue(G.GetAmountOfVertices(), d);
 
 	while (!Q.IsEmpty())
@@ -425,7 +302,6 @@ void FlowNetwork::Dijkstra(Graph G, vertex s)
 				{
 					minCap = min(d[u.ver], Wuv);
 				}
-				
 
 				if (minCap > d[v])
 				{
@@ -439,6 +315,7 @@ void FlowNetwork::Dijkstra(Graph G, vertex s)
 		}
 	}
 
+	delete e;
 }
 
 // Initiate the d and p vectors
@@ -450,7 +327,6 @@ void FlowNetwork::InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, verte
 	}
 
 	d->at(s) = 0;
-
 	for (int v = 1; v <= G.GetAmountOfVertices(); v++)
 	{
 		p->at(v) = 0;
@@ -464,5 +340,6 @@ void FlowNetwork::printD()
 	{
 		cout << u << " ";
 	}
+
 	cout << "\n";
 }

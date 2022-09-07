@@ -17,6 +17,7 @@ list<neighbor> Graph::GetAdjList(vertex u)
 	return m_AdjLists[u];
 }
 
+// Get the vertex "u" neighbors list and make changes
 list<neighbor>* Graph::SetAdjList(vertex u)
 {
 	return &m_AdjLists[u];
@@ -31,6 +32,7 @@ void Graph::AddEdge(vertex u, vertex v, int c)
 	m_AdjLists[u].push_back(newNeighbor);
 }
 
+// Get the pointer to the edge
 Edge& Graph::GetEdgePtr(vertex u, vertex v)
 {
 	list<neighbor> AdjList = m_AdjLists[u];
@@ -88,7 +90,7 @@ void Graph::PrintAdjList(vertex u)
 	cout << "\n";
 }
 
-
+// Add negative edges to the graph
 void Graph::AddNegativeEdges()
 {
 	bool negEdgeExist = false;
@@ -134,64 +136,7 @@ void Graph::AddNegativeEdges()
 			}
 
 			negEdgeExist = false;
-
 			++itrV;
 		}
 	}
-	
-
-
-
-
-	//bool negEdgeExist = false;
-	//list<neighbor> AdjList;
-
-	//for (int i = 1; i <= m_AmountOfVertices; i++)
-	//{
-	//	for (auto v : m_AdjLists[i])
-	//	{
-	//		for (auto u : m_AdjLists[v.first])
-	//		{
-	//			if (u.first == v.second.GetSrc())
-	//			{
-	//				v.second.SetNegEdge(&(u.second));
-	//				u.second.SetNegEdge(&(v.second));
-	//				negEdgeExist = true;
-	//			}
-	//		}
-
-	//		if (negEdgeExist == false)
-	//		{
-	//			Edge newEdge(v.second.GetDest(), v.second.GetSrc(), 0, 0);
-	//			neighbor newNeighbor(v.second.GetSrc(), newEdge);
-	//			m_AdjLists[v.first].push_back(newNeighbor);
-
-	//			for (auto u : m_AdjLists[v.first])
-	//			{
-	//				if (u.first == v.second.GetSrc())
-	//				{
-	//					v.second.SetNegEdge(&(u.second));
-	//					u.second.SetNegEdge(&(v.second));
-	//				}
-	//			}
-	//		}
-
-	//		negEdgeExist = false;
-	//	}
-	//}
-
-	//this->PrintGraph();                 // CHECKING	
-	//cout << "\n";
-	//int i;
-	//for (i = 1; i <= this->GetAmountOfVertices() ; i++)
-	//{
-	//	for (auto v : m_AdjLists[i])
-	//	{
-	//		v.second.PrintEdge();
-	//		cout << " - ";
-	//		v.second.GetNegEdge()->PrintEdge();
-	//		cout << "\n";
-	//	}
-	//}
-	
 }

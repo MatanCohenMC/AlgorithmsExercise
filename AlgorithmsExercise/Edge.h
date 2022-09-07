@@ -10,7 +10,7 @@ private:
 	vertex m_Dest;
 	int m_Cap;
 	int m_Flow;
-	Edge* m_NegEdge = (Edge*)malloc(sizeof(Edge)); // DON'T FORGET TO DELETE
+	Edge* m_NegEdge = (Edge*)malloc(sizeof(Edge));
 
 public:
 	Edge(int src, int dest, int cap, int flow = 0, Edge* negEdge = NULL);
@@ -24,4 +24,5 @@ public:
 	Edge* GetNegEdge() { return m_NegEdge; }
 	void SetCap(int cap) { m_Cap = cap; }
 	void PrintEdge();
+	void FreeEdge() { delete m_NegEdge; }
 };

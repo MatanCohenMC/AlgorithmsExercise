@@ -19,10 +19,8 @@ public:
 	void InitDijkstra(Graph G, vector<int>* d, vector<vertex>* p, vertex s);
 	int FFbyBFS(vector<vertex>* S, vector<vertex>* T);
 	int FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vertex>* T);
-	void findPathInGraph(Graph G, list<Edge*>* P, vertex s, vertex t);
-	int findResidualCap(Graph G, list<Edge*> P);
-	void updatePathInGraph(Graph G, list<Edge*>* P, int CfP);
-	void updatePathInResidualGraph(Graph *G, Graph *RG, list<Edge*>* P, list<Edge*>* RP);
+	int findResidualCap(Graph G);
+	void updatePathInGraph(int CfP);
+	void updatePathInResidualGraph(Graph *G, Graph *RG);
 	void printD();
 };
-

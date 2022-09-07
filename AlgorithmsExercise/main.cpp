@@ -1,9 +1,7 @@
 using namespace std;
 #include <iostream>
 #include "Graph.h"
-#include <math.h>
-#include "PriorityQueue.h"
-#include  "FlowNetwork.h"
+#include "FlowNetwork.h"
 
 void initParams(int* n, int* m, int* s, int* t);
 void initListOfEdges(int n, int m, list<Edge>* listOfEdges, Graph* graph);
@@ -13,7 +11,7 @@ int getWholePositiveOrZeroNum();
 bool ifNumIsWhole(float num);
 int getNumInRange(int numOfVertices);
 void printMinCut(vector<vertex> S, vector<vertex> T);
-
+void freeEdges(list<Edge>* listOfEdges);
 
 int main()
 {
@@ -26,12 +24,11 @@ int main()
 
 	initParams(&n, &m, &s, &t);
 	G.MakeEmptyGraph(n);
-	list<Edge> listOfEdges; // not really needed
+	list<Edge> listOfEdges;
 	initListOfEdges(n,m, &listOfEdges, &G);
 	//G.PrintGraph(); // JUST FOR CHECKING
 
 	Graph G2 = G;
-
 	FlowNetwork flowNetWorkForBFS(&G, s, t);
 	FlowNetwork flowNetWorkForDijkstra(&G2, s, t);
 
@@ -39,15 +36,12 @@ int main()
 	cout << "BFS Method:\n";
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S,T);
-
 	S.clear(); T.clear();
-	
 	maxFlow = flowNetWorkForDijkstra.FFbyDijkstra(s,t, &S, &T);
 	cout << "Greedy Method:\n";
 	cout << "Max flow = " << maxFlow << "\n";
 	printMinCut(S, T);
-
-
+	freeEdges(&listOfEdges);
 
 
 	// Test queue
@@ -73,13 +67,13 @@ int main()
 // get the number of vertices, number of edges, the number representing s and the number representing s
 void initParams(int* n, int* m, vertex* s, vertex* t)
 {
-	//cout << "Please enter the number of vertices.\n";
+	// cout << "Please enter the number of vertices.\n";
 	*n = getWholePositiveOrZeroNum();
-	//cout << "Please enter the number of edges.\n";
+	// cout << "Please enter the number of edges.\n";
 	*m = getWholePositiveOrZeroNum();
-	//cout << "Please enter the number that represent S.\n";
+	// cout << "Please enter the number that represent S.\n";
 	*s = getNumInRange(*n);
-	//cout << "Please enter the number that represent T.\n";
+	// cout << "Please enter the number that represent T.\n";
 	*t = getNumInRange(*n);
 }
 
@@ -169,43 +163,9 @@ void initListOfEdges(int n,int m, list<Edge>* listOfEdges, Graph* graph)
 	graph->AddNegativeEdges();
 }
 
+// Print the minimum cut
 void printMinCut(vector<vertex> S, vector<vertex> T)
 {
-	//cout << "Min cut: S = ";
-	//for (auto i : S)
-	//{
-	//	cout << i << ", ";
-	//}
-
-	//cout << "\b\b" << ". ";
-	//cout << "T = ";
-	//for (auto i : T)
-	//{
-	//	cout << i << ", ";
-	//}
-
-	//cout << "\b\b" << ". " << "\n";
-
-	//////////////////////////////////////////
-
-	/*int i,j;
-	cout << "Min cut: S = ";
-
-	for (i = 0; i < S.size() - 1; i++)
-	{
-		cout << S.at(i) << ", ";
-	}
-	cout << i << ". ";
-
-	cout << "T = ";
-	for (j = 0; j < T.size() - 1; j++)
-	{
-		cout << T.at(j) << ", ";
-	}
-	cout << j << "\n";*/
-
-	/////////////////////////////////////////////
-
 	int countI = 0;
 	int sSize = S.size();
 	int tSize = T.size();
@@ -238,4 +198,13 @@ void printMinCut(vector<vertex> S, vector<vertex> T)
 	}
 
 	cout << "\n";
+}
+
+// Free all the edges
+void freeEdges(list<Edge>* listOfEdges)
+{
+	for (auto i : *listOfEdges)
+	{
+		i.FreeEdge();
+	}
 }
