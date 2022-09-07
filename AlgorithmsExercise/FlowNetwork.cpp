@@ -33,12 +33,12 @@ int FlowNetwork::FFbyBFS(vector<vertex> *S, vector<vertex> *T)
 		updatePathInResidualGraph(&m_Graph, &residualGraph ,&P,&RP);
 		maxFlow += CfP;
 		
-		m_Graph.PrintGraph();
+		/*m_Graph.PrintGraph();
 		cout << "/////////////////////////////////////// \n";
-		residualGraph.PrintGraph();
+		residualGraph.PrintGraph();*/
 
 		BFS(residualGraph, m_S);
-		printD();
+		//printD();
 	
 	}
 
@@ -76,20 +76,20 @@ int FlowNetwork::FFbyDijkstra(vertex s, vertex t, vector<vertex>* S, vector<vert
 
 	printD();
 
-	while (d[m_T] != -1)
+	while (d[m_T] != -1 && d[m_T] != 0)
 	{
 		int CfP = findResidualCap(residualGraph, RP);
 		updatePathInGraph(m_Graph, &P, CfP);
 		updatePathInResidualGraph(&m_Graph, &residualGraph, &P, &RP);
 		maxFlow += CfP;
 
-		m_Graph.PrintGraph();
-		cout << "/////////////////////////////////////// \n";
-		residualGraph.PrintGraph();
+		//m_Graph.PrintGraph();
+		//cout << "/////////////////////////////////////// \n";
+		//residualGraph.PrintGraph();
 
 		//BFS(residualGraph, m_S); // dikstra
 		Dijkstra(residualGraph, m_S);
-		printD();
+		//printD();
 
 	}
 
